@@ -1,7 +1,7 @@
 import React from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-import {Container, RightSide, LeftSide} from "./Sign.styles";
+import { Container, RightSide, LeftSide } from "./Sign.styles";
 
 const Sign = props => {
   return (

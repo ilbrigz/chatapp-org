@@ -32,12 +32,15 @@ const SignIn = () => {
         ...formFields,
         rememberMe: !formFields.rememberMe
       });
-      return;
+    } else {
+      setFormFields({
+        ...formFields,
+        [e.target.name]: e.target.value
+      });
     }
-    setFormFields({
-      ...formFields,
-      [e.target.name]: e.target.value
-    });
+
+    //Remove field error
+    delete formErrors[e.target.name];
   };
 
   const submitForm = async e => {
@@ -61,7 +64,7 @@ const SignIn = () => {
         });
       } catch (e) {
         console.log(e.response);
-        setFormErrors({userName: "User not found"});
+        setFormErrors({ userName: "User not found" });
         setFormLoader(false);
       }
     }

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const StyledContainer = styled.div`
   text-align: center;
   padding: 1rem;
-  margin: 4rem 0;
+  margin: 2rem 0;
   @media screen and (min-width: 800px) {
     min-width: 80%;
   }
@@ -36,7 +36,7 @@ export const ButtonContainer = styled(SubContainer)`
 
 export const StyledLink = styled.p`
   color: ${props => props.theme.mainColor};
-  opacity: ${props => props.disabled ? "0.5" : 1}
+  opacity: ${props => (props.disabled ? "0.5" : 1)}
   display: inline-block;
   transition: all 0.2s ease-in;
   cursor: pointer;

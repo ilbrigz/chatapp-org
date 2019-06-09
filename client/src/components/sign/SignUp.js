@@ -70,12 +70,15 @@ const SignUp = () => {
         ...formFields,
         termsAccepted: !formFields.termsAccepted
       });
-      return;
+    } else {
+      setFormFields({
+        ...formFields,
+        [e.target.name]: e.target.value
+      });
     }
-    setFormFields({
-      ...formFields,
-      [e.target.name]: e.target.value
-    });
+
+    //Remove field error
+    delete formErrors[e.target.name];
   };
 
   const submitForm = async e => {
@@ -182,7 +185,9 @@ const SignUp = () => {
               style={{ marginRight: "0.7rem" }}
               name="termsAccepted"
             />
-            <StyledLink disabled={formLoading}>I agree with the terms and conditions</StyledLink>
+            <StyledLink disabled={formLoading}>
+              I agree with the terms and conditions
+            </StyledLink>
           </label>
           <p
             style={{
@@ -196,7 +201,12 @@ const SignUp = () => {
         </div>
 
         <ButtonContainer>
-          <MainButton loading={formLoading} solid type="submit" disabled={formLoading}>
+          <MainButton
+            loading={formLoading}
+            solid
+            type="submit"
+            disabled={formLoading}
+          >
             Sign Up
           </MainButton>
         </ButtonContainer>
