@@ -6,10 +6,14 @@ require("dotenv").config();
 
 module.exports = {
   signup: async (req, res) => {
-    const userExists = await User.findOne({ email: req.body.email });
+    let userExists = await User.findOne({ userName: req.body.userName });
+    if (userExists)
+      return res.status(403).json({ userName: ["userName is taken!"] });
+    userExists = await User.findOne({ email: req.body.email });
     if (userExists) return res.status(403).json({ email: ["Email is taken!"] });
     const user = await new User(req.body);
     await user.save();
+    console.log(user.password);
     return res.status(200).json(user);
   },
   signin: async (req, res) => {
