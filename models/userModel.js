@@ -1,10 +1,20 @@
 const mongoose = require("mongoose");
 const uuidv1 = require("uuid/v1");
 const crypto = require("crypto");
-const { ObjectId } = mongoose.Schema;
+// const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
-  name: {
+  firstName: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  lastName: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  userName: {
     type: String,
     trim: true,
     required: true
@@ -22,16 +32,7 @@ const userSchema = new mongoose.Schema({
   created: {
     type: Date,
     default: Date.now
-  },
-  about: {
-    type: String,
-    trim: true
-  },
-  refreshToken: {
-    type: String,
-    default: 0
-  },
-  updated: Date
+  }
 });
 
 // add virtual fields to schema

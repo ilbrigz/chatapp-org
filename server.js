@@ -11,7 +11,12 @@ const cors = require("cors");
 const path = require("path");
 const http = require("http");
 dotenv.config();
-const chatContoller = require("./contollers/chatConroller");
+
+// socket io TODO
+const chatContoller = require("./controllers/chatConroller");
+
+// api routes
+const authRoutes = require("./routes/authRoutes");
 
 const port = process.env.PORT || 8080;
 
@@ -40,6 +45,8 @@ app.use(expressValidator());
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use("/", authRoutes);
 
 app.get("/", (req, res, next) => res.send("my backend api"));
 

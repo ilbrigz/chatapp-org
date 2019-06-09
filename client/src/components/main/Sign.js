@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
 import SignIn from "../sign/SignIn";
 import SignUp from "../sign/SignUp";
 
-const Sign = (props) => {
+const Sign = props => {
   const Container = styled.div`
     display: flex;
     justify-content: center;
@@ -16,7 +16,7 @@ const Sign = (props) => {
   `;
 
   const LeftSide = styled.div`
-    background: linear-gradient(20deg, #5A55AA, #242348);
+    background: linear-gradient(20deg, #5a55aa, #242348);
     align-self: stretch;
     display: flex;
     justify-content: center;
@@ -25,9 +25,9 @@ const Sign = (props) => {
     overflow: hidden;
     color: ${props => props.theme.whiteColor};
     &::after {
-      content: '';
+      content: "";
       background: url("images/sign_bg3.png") no-repeat bottom center;
-      background-size: cover; 
+      background-size: cover;
       width: 100%;
       height: 70%;
       position: absolute;
@@ -59,15 +59,18 @@ const Sign = (props) => {
   return (
     <Container>
       <LeftSide>
-        {props.location.pathname === "/signIn" && <div>
-          <p>Meet and connect with other professionals and
-            like-minded individuals from all over the world.
-          </p>
-          <p>Expand your network--one chatroom at a time.</p>
-        </div>}
+        {props.location.pathname === "/signIn" && (
+          <div>
+            <p>
+              Meet and connect with other professionals and like-minded
+              individuals from all over the world.
+            </p>
+            <p>Expand your network--one chatroom at a time.</p>
+          </div>
+        )}
       </LeftSide>
       <RightSide>
-        {props.location.pathname === "/signIn" ? <SignIn/> : <SignUp/>}
+        {props.location.pathname === "/signIn" ? <SignIn /> : <SignUp />}
       </RightSide>
     </Container>
   );
