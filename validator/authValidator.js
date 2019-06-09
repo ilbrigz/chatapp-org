@@ -1,7 +1,7 @@
 exports.signupValidator = (req, res, next) => {
   req.check("firstName", "Name is required").notEmpty();
-  req.check("lastName", "Name is required").notEmpty();
-  req.check("userName", "Name is required").notEmpty();
+  req.check("lastName", "Last name is required").notEmpty();
+  req.check("userName", "Username is required").notEmpty();
   req.check("email", "Email is required").notEmpty();
   req.check("email", "Please use a valid email address").isEmail();
   req
