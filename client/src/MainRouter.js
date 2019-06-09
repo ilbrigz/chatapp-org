@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 
 import Home from "./components/main/Home";
 // import Menu from "./components/layout/Menu";
-import Sign from "./components/main/Sign";
+import Sign from "./components/sign/Sign";
 
 export default () => {
   return (
