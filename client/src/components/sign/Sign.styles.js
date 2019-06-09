@@ -1,10 +1,6 @@
-import React from "react";
 import styled from "styled-components";
-import SignIn from "../sign/SignIn";
-import SignUp from "../sign/SignUp";
 
-const Sign = props => {
-  const Container = styled.div`
+export const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,7 +11,7 @@ const Sign = props => {
     }
   `;
 
-  const LeftSide = styled.div`
+export const LeftSide = styled.div`
     background: linear-gradient(20deg, #5a55aa, #242348);
     align-self: stretch;
     display: flex;
@@ -49,31 +45,9 @@ const Sign = props => {
     }
   `;
 
-  const RightSide = styled.div`
+export const RightSide = styled.div`
     align-self: stretch;
     display: flex;
     justify-content: center;
     align-items: center;
   `;
-
-  return (
-    <Container>
-      <LeftSide>
-        {props.location.pathname === "/signIn" && (
-          <div>
-            <p>
-              Meet and connect with other professionals and like-minded
-              individuals from all over the world.
-            </p>
-            <p>Expand your network--one chatroom at a time.</p>
-          </div>
-        )}
-      </LeftSide>
-      <RightSide>
-        {props.location.pathname === "/signIn" ? <SignIn /> : <SignUp />}
-      </RightSide>
-    </Container>
-  );
-};
-
-export default Sign;

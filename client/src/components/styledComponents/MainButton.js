@@ -1,8 +1,23 @@
 import React from 'react';
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
 import PropTypes from "prop-types";
-
+import {FaSpinner} from "react-icons/fa";
 const MainButton = (props) => {
+
+  const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+  const Spinner = styled(FaSpinner)`
+    animation: ${rotate} 2s linear infinite;
+  `;
+
 
   const StyledButton = styled.button`
     border-radius: 4px;
@@ -14,7 +29,7 @@ const MainButton = (props) => {
     font-size: 1.2rem;
     min-width: 190px;
     transition: all 0.2s linear;
-    cursor: pointer;
+    cursor: ${props => props.disabled ? "not-allowed" : "cursor"};
     box-shadow: 0 4px 17px 0 rgba(67,66,93,0.05), 0 6px 20px 0 rgba(67,66,93,0.1);
     &:hover {
         box-shadow: 0 4px 17px 0 rgba(67,66,93,0.2), 0 6px 20px 0 rgba(67,66,93,0.4);
@@ -23,13 +38,14 @@ const MainButton = (props) => {
 
   return (
     <StyledButton {...props}>
-      {props.children}
+      {props.loading ? <Spinner /> : props.children}
     </StyledButton>
   );
 };
 
 MainButton.propTypes = {
-  solid: PropTypes.bool
+  solid: PropTypes.bool,
+  loading: PropTypes.bool
 };
 
 export default MainButton;

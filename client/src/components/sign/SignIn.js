@@ -1,73 +1,70 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { combineValidators, isRequired } from "revalidate";
 import MainButton from "../styledComponents/MainButton";
 import InputField from "../styledComponents/InputField";
-
-const StyledHeader = styled.h2`
-  letter-spacing: 4px;
-  color: ${props => props.theme.mainColor};
-  font-size: 1.8rem;
-  margin-top: 0;
-`;
-
-const StyledText = styled.p`
-  color: ${props => props.theme.fadedColor};
-  margin-bottom: 3rem;
-`;
-
-const SubContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  flex-flow: row wrap;
-  margin-top: 1rem;
-`;
-
-const LinksContainer = styled(SubContainer)`
-  label,
-  p,
-  a {
-    color: ${props => props.theme.mainColor};
-    text-decoration: none;
-    transition: all 0.2s ease-in;
-    cursor: pointer;
-    margin: 0;
-    font-size: 1rem;
-    &:hover {
-      color: ${props => props.theme.fadedColor};
-    }
-  }
-  input {
-    margin-right: 0.7rem;
-  }
-`;
-
-const ButtonContainer = styled(SubContainer)`
-  margin-top: 3rem;
-  justify-content: center;
-`;
+import {
+  StyledText,
+  ButtonContainer,
+  StyledHeader,
+  LinksContainer
+} from "./SignIn.styles";
+import axios from "axios";
+import { backendURL } from "../../variables";
 
 const SignIn = () => {
-  const [formFields, setFormFields] = useState({ user: "", password: "" });
-  const [formErrors, setFormErrors] = useState({ user: "", password: "" });
+  const [formFields, setFormFields] = useState({
+    userName: "",
+    password: "",
+    rememberMe: false
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [formLoading, setFormLoader] = useState(false);
 
   const formValidator = combineValidators({
-    user: isRequired("User"),
+    userName: isRequired("User"),
     password: isRequired("Password")
   });
 
   const handleFieldsChange = e => {
+    if (e.target.name === "rememberMe") {
+      setFormFields({
+        ...formFields,
+        rememberMe: !formFields.rememberMe
+      });
+      return;
+    }
     setFormFields({
       ...formFields,
       [e.target.name]: e.target.value
     });
   };
 
-  const submitForm = e => {
+  const submitForm = async e => {
     e.preventDefault();
-    setFormErrors(formValidator(formFields));
+    const errors = formValidator(formFields);
+    setFormErrors(errors);
+
+    //check if no errors
+    if (Object.entries(errors).length === 0 && errors.constructor === Object) {
+      try {
+        setFormLoader(true);
+        const res = await axios.post(`${backendURL}/signin`, formFields);
+        console.log(res);
+        alert(`Signed in ${res.data.firstName}`);
+        //Remove loader and reset fields
+        setFormLoader(false);
+        setFormFields({
+          userName: "",
+          password: "",
+          rememberMe: false
+        });
+      } catch (e) {
+        console.log(e.response);
+        setFormErrors({userName: "User not found"});
+        setFormLoader(false);
+      }
+    }
   };
 
   return (
@@ -76,14 +73,16 @@ const SignIn = () => {
       <StyledText>Welcome back! Please login to your account.</StyledText>
       <form action="" method="post" onSubmit={submitForm}>
         <InputField
+          disabled={formLoading}
           onChange={handleFieldsChange}
-          value={formFields.user}
-          error={formErrors.user}
+          value={formFields.userName}
+          error={formErrors.userName}
           type="text"
           placeholder="Username or Email"
-          name="user"
+          name="userName"
         />
         <InputField
+          disabled={formLoading}
           onChange={handleFieldsChange}
           value={formFields.password}
           error={formErrors.password}
@@ -93,7 +92,14 @@ const SignIn = () => {
         />
         <LinksContainer>
           <label htmlFor="rememberMe">
-            <input type="checkbox" id="rememberMe" />
+            <input
+              disabled={formLoading}
+              onChange={handleFieldsChange}
+              defaultChecked={formFields.rememberMe}
+              type="checkbox"
+              id="rememberMe"
+              name="rememberMe"
+            />
             Remember me
           </label>
           <Link to="forgotPassword">
@@ -101,7 +107,7 @@ const SignIn = () => {
           </Link>
         </LinksContainer>
         <ButtonContainer>
-          <MainButton solid type="submit">
+          <MainButton solid type="submit" loading={formLoading}>
             Login
           </MainButton>
           <Link to="/signUp">

@@ -20,6 +20,7 @@ const StyledInput = styled.input`
     padding: 1rem 0.4rem;
     transition: all 0.2s ease-in;
     margin-bottom: 0.5rem;
+    opacity: ${props => props.disabled ? "0.5" : 1}
     border-bottom: ${props =>
   props.error ? "2px solid #efadb3" : "2px solid #E9E9F0"};
     &:focus {
@@ -37,13 +38,16 @@ const InputField = props => {
   return (
     <InputContainer {...props}>
       <StyledInput {...props} />
-      <p>{props.error || ""}</p>
+      {Array.isArray(props.error) ? (props.error.map((error, i) => <p key={i}>{error}</p>)) : (<p>{props.error || ""}</p>)}
     </InputContainer>
   );
 };
 
 InputField.propTypes = {
-  error: PropTypes.string,
+  error: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array
+  ]),
   withMargin: PropTypes.bool,
 };
 
