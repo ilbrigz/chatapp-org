@@ -13,7 +13,7 @@ module.exports = {
     if (userExists) return res.status(403).json({ email: ["Email is taken!"] });
     const user = await new User(req.body);
     await user.save();
-    console.log(user.password);
+
     return res.status(200).json(user);
   },
   signin: async (req, res) => {
