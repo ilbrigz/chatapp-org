@@ -2,7 +2,7 @@
 
 create a .env file
 add the following lines
-replace the url with what you own localdb
+replace the url with what your own localdb
 you can also replace the secret
 
 MONGO_URI="mongodb://localhost/chat-app-2"
