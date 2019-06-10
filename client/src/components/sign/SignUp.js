@@ -11,8 +11,8 @@ import {
 } from "revalidate";
 import axios from "axios";
 import { backendURL } from "../../variables";
-import MainButton from "../styledComponents/MainButton";
-import InputField from "../styledComponents/InputField";
+import MainButton from "../common/MainButton";
+import InputField from "../common/InputField";
 import {
   StyledHeader,
   ButtonContainer,
@@ -163,6 +163,7 @@ const SignUp = () => {
           type="password"
           placeholder="Password"
           name="password"
+          auto-complete="new-password"
         />
         <InputField
           disabled={formLoading}
@@ -172,6 +173,7 @@ const SignUp = () => {
           type="password"
           placeholder="Confirm Password"
           name="password2"
+          auto-complete="new-password"
         />
 
         <div style={{ textAlign: "left" }}>

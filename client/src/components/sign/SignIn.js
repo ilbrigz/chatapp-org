@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { combineValidators, isRequired } from "revalidate";
-import MainButton from "../styledComponents/MainButton";
-import InputField from "../styledComponents/InputField";
+import MainButton from "../common/MainButton";
+import InputField from "../common/InputField";
 import {
   StyledText,
   ButtonContainer,
@@ -92,6 +92,7 @@ const SignIn = () => {
           type="password"
           placeholder="Password"
           name="password"
+          auto-complete="current-password"
         />
         <LinksContainer>
           <label htmlFor="rememberMe">
