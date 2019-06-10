@@ -1,45 +1,10 @@
 import React from "react";
-import { Layout, List, Typography, Icon, Menu, Dropdown } from "antd/lib/index";
-import styled from "styled-components";
+import { Layout, List, Typography, Icon, Menu, Dropdown } from "antd";
 import { Link } from "react-router-dom";
+import {StyledLink, StyledListContainer, LayoutContainer} from "./DashboardHome.styles";
+import {data2, data1, menu1Links, menu2Links} from "./data";
+import CreateRoomForm from "./CreateRoomForm";
 
-const StyledListContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  & > div {
-    background: white;
-    flex: 1;
-    margin: 1rem;
-    padding: 1rem 2rem;
-    & > div {
-      max-width: 450px;
-      margin: 0 auto;
-    }
-    .ant-list-header {
-      border-bottom-width: 2px;
-      margin-bottom: 2rem;
-      h2 {
-        margin-bottom: 0;
-      }
-    }
-    li {
-      border: none !important;
-      &:nth-of-type(even) {
-        a {
-          color: ${props => props.theme.highlightColor};
-        }
-      }
-    }
-  }
-  @media screen and (max-width: 900px) {
-    display: block;
-  }
-`;
-
-const StyledLink = styled.a`
-  color: ${props => props.theme.secondaryColor};
-`;
 
 // const count = 3;
 // const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
@@ -93,183 +58,79 @@ const DashboardHome = () => {
   //     </div>
   //   ) : null;
 
-  const data1 = [
-    {
-      title: "Los Angeles"
-    },
-    {
-      title: "Brooklyn"
-    },
-    {
-      title: "Seattle"
-    },
-    {
-      title: "Brisbane"
-    },
-    {
-      title: "Manila"
-    },
-    {
-      title: "Berlin"
-    }
-  ];
-
-  const data2 = [
-    {
-      title: "Web Developers"
-    },
-    {
-      title: "Travelers"
-    },
-    {
-      title: "Photography"
-    },
-    {
-      title: "Film Making"
-    },
-    {
-      title: "Travelers"
-    },
-    {
-      title: "Film Making"
-    }
-  ];
-
   const menu1 = (
     <Menu>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.alipay.com/"
-        >
-          1st menu item
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.taobao.com/"
-        >
-          2nd menu item
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.tmall.com/"
-        >
-          3rd menu item
-        </a>
-      </Menu.Item>
+      {menu1Links.map((link, i) => (
+        <Menu.Item key={i}>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={link.link}
+          >
+            {link.title}
+          </a>
+        </Menu.Item>
+      ))}
     </Menu>
   );
 
   const menu2 = (
     <Menu>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.alipay.com/"
-        >
-          1st menu item
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.taobao.com/"
-        >
-          2nd menu item
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.tmall.com/"
-        >
-          3rd menu item
-        </a>
-      </Menu.Item>
+      {menu2Links.map((link, i) => (
+        <Menu.Item key={i}>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={link.link}
+          >
+            {link.title}
+          </a>
+        </Menu.Item>
+      ))}
     </Menu>
   );
 
-  const TitleOne = () => (
+  const TableTitle = (props) => (
     <div
       style={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        flexFlow: "row wrap"
       }}
     >
-      <Typography.Title level={2}>Join a Room</Typography.Title>
-      <Dropdown overlay={menu1}>
+      <Typography.Title level={2}>{props.title}</Typography.Title>
+      <Dropdown overlay={props.menu}>
         <StyledLink className="ant-dropdown-link" href="#">
-          Most Popular <Icon type="down" />
+          {props.link} <Icon type="down" />
         </StyledLink>
       </Dropdown>
     </div>
   );
 
-  const FooterOne = () => (
-    <Link to="/rooms">
-      <a style={{ textAlign: "right", display: "block" }}>
+  const TableFooter = (props) => (
+    <Link to={props.room}>
+      <span style={{ textAlign: "right", display: "block" }}>
         <Icon type="caret-right" style={{ marginRight: 5 }} />
-        Show All Rooms
-      </a>
-    </Link>
-  );
-
-  const TitleTwo = () => (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center"
-      }}
-    >
-      <Typography.Title level={2}>Favorites</Typography.Title>
-      <Dropdown overlay={menu2}>
-        <a className="ant-dropdown-link" href="#">
-          Sort By <Icon type="down" />
-        </a>
-      </Dropdown>
-    </div>
-  );
-
-  const FooterTwo = () => (
-    <Link to="/rooms">
-      <a style={{ textAlign: "right", display: "block" }}>
-        <Icon type="caret-right" style={{ marginRight: 5 }} />
-        Show All Rooms
-      </a>
+        {props.title}
+      </span>
     </Link>
   );
 
   return (
-    <Layout.Content
-      style={{
-        padding: "2rem 1rem",
-        marginTop: 64
-      }}
-    >
+    <LayoutContainer>
       <StyledListContainer>
         <List
           itemLayout="horizontal"
           dataSource={data1}
-          header={<TitleOne />}
-          footer={<FooterOne />}
+          header={<TableTitle title="Join a Room" menu={menu1} link="Most Popular" />}
+          footer={<TableFooter room="/rooms" title="Show All Rooms" />}
           renderItem={item => (
             <List.Item>
               <List.Item.Meta
                 title={
                   <Link to="https://ant.design">
-                    <a>{item.title}</a>
+                    <span>{item.title}</span>
                   </Link>
                 }
               />
@@ -280,14 +141,14 @@ const DashboardHome = () => {
         <List
           itemLayout="horizontal"
           dataSource={data2}
-          header={<TitleTwo />}
-          footer={<FooterTwo />}
+          header={<TableTitle title="Favourites" menu={menu2} link="Sort By" />}
+          footer={<TableFooter room="/rooms" title="Show All Rooms" />}
           renderItem={item => (
             <List.Item>
               <List.Item.Meta
                 title={
                   <Link to="https://ant.design">
-                    <a>{item.title}</a>
+                    <span>{item.title}</span>
                   </Link>
                 }
               />
@@ -296,7 +157,8 @@ const DashboardHome = () => {
           )}
         />
       </StyledListContainer>
-    </Layout.Content>
+      <CreateRoomForm/>
+    </LayoutContainer>
   );
 };
 

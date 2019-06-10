@@ -3,8 +3,8 @@ import { Layout } from 'antd';
 
 const Footer = () => {
   return (
-    <Layout.Footer>
-      Footer
+    <Layout.Footer align="center">
+      Copyright © 2019 KLATCH
     </Layout.Footer>
   );
 };

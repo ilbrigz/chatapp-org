@@ -126,6 +126,7 @@ const SignUp = () => {
             type="text"
             placeholder="First Name"
             name="firstName"
+            autoComplete="first name"
           />
           <InputField
             disabled={formLoading}
@@ -135,6 +136,7 @@ const SignUp = () => {
             type="text"
             placeholder="Last Name"
             name="lastName"
+            autoComplete="last name"
           />
         </div>
         <InputField
@@ -145,6 +147,7 @@ const SignUp = () => {
           type="text"
           placeholder="Username"
           name="userName"
+          autoComplete="user name"
         />
         <InputField
           disabled={formLoading}
@@ -154,6 +157,7 @@ const SignUp = () => {
           type="email"
           placeholder="Email"
           name="email"
+          autoComplete="email"
         />
         <InputField
           disabled={formLoading}
@@ -163,7 +167,7 @@ const SignUp = () => {
           type="password"
           placeholder="Password"
           name="password"
-          auto-complete="new-password"
+          autoComplete="new-password"
         />
         <InputField
           disabled={formLoading}
@@ -173,7 +177,7 @@ const SignUp = () => {
           type="password"
           placeholder="Confirm Password"
           name="password2"
-          auto-complete="new-password"
+          autoComplete="new-password"
         />
 
         <div style={{ textAlign: "left" }}>

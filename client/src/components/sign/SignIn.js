@@ -83,6 +83,7 @@ const SignIn = () => {
           type="text"
           placeholder="Username or Email"
           name="userName"
+          autoComplete="username || email"
         />
         <InputField
           disabled={formLoading}
@@ -92,7 +93,7 @@ const SignIn = () => {
           type="password"
           placeholder="Password"
           name="password"
-          auto-complete="current-password"
+          autoComplete="current-password"
         />
         <LinksContainer>
           <label htmlFor="rememberMe">

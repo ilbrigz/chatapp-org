@@ -14,7 +14,7 @@ module.exports = override(
       "@layout-trigger-background": "#3B3A53",
       "@primary-color": "#575679",
       "@link-color": "#1890ff",
-      "@success-color": "#52c41a",
+      "@layout-body-background": "#F0F0F7",
       "@warning-color": "#faad14",
       "@error-color": "#f5222d",
       "@font-size-base": "14px",
