@@ -53,6 +53,78 @@ export const RightSide = styled.div`
   align-items: center;
 `;
 
+export const StyledContainer = styled.div`
+  text-align: center;
+  padding: 1rem;
+  margin: 2rem 0;
+  @media screen and (min-width: 800px) {
+    min-width: 80%;
+  }
+`;
+
+export const StyledLink = styled.p`
+  color: ${props => props.theme.mainColor};
+  opacity: ${props => (props.disabled ? "0.5" : 1)}
+  display: inline-block;
+  transition: all 0.2s ease-in;
+  cursor: pointer;
+  &:hover {
+    color: ${props => props.theme.fadedColor};
+  }
+`;
+
+export const SignInLink = styled(StyledLink)`
+  margin-top: 2rem;
+  text-decoration: underline;
+`;
+
+export const StyledHeader = styled.h2`
+  letter-spacing: 4px;
+  color: ${props => props.theme.mainColor};
+  font-size: 1.8rem;
+  margin-top: 0;
+`;
+
+export const StyledText = styled.p`
+  color: ${props => props.theme.fadedColor};
+  margin-bottom: 3rem;
+`;
+
+export const SubContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-flow: row wrap;
+  margin-top: 1rem;
+  > div {
+    flex: 1;
+  }
+`;
+
+export const LinksContainer = styled(SubContainer)`
+  label,
+  p,
+  a {
+    color: ${props => props.theme.mainColor};
+    text-decoration: none;
+    transition: all 0.2s ease-in;
+    cursor: pointer;
+    margin: 0;
+    font-size: 1rem;
+    &:hover {
+      color: ${props => props.theme.fadedColor};
+    }
+  }
+  input {
+    margin-right: 0.7rem;
+  }
+`;
+
+export const ButtonContainer = styled(SubContainer)`
+  margin-top: 3rem;
+  justify-content: center;
+`;
+
 export const StyledInput = styled(Input)`
   border-right: none;
   border-left: none;

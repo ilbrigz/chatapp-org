@@ -1,227 +1,255 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  combineValidators,
-  matchesField,
-  matchesPattern,
-  isRequired,
-  hasLengthBetween,
-  composeValidators,
-  isOneOf
-} from "revalidate";
 import axios from "axios";
 import { backendURL } from "../../variables";
-import MainButton from "../common/MainButton";
-import InputField from "../common/InputField";
+import { Checkbox, Form, Modal } from "antd";
 import {
+  StyledButton,
+  StyledInput,
   StyledHeader,
   ButtonContainer,
   StyledText,
   SignInLink,
-  StyledLink,
+  SubContainer,
   StyledContainer
-} from "./SignUp.styles";
+} from "./Sign.styles";
 
-const SignUp = () => {
-  const [formFields, setFormFields] = useState({
-    firstName: "",
-    lastName: "",
-    password: "",
-    userName: "",
-    email: "",
-    password2: "",
-    termsAccepted: false
-  });
-  const [formErrors, setFormErrors] = useState({});
-  const [formLoading, setFormLoader] = useState(false);
+const SignUp = props => {
+  const [loading, setLoading] = useState(false);
+  const [confirmDirty, setConfirmDirty] = useState(false);
 
-  const formValidator = combineValidators({
-    firstName: isRequired("First Name"),
-    lastName: isRequired("Last Name"),
-    userName: composeValidators(isRequired, hasLengthBetween(6, 40))(
-      "Username"
-    ),
-    email: composeValidators(
-      isRequired,
-      matchesPattern(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )
-    )({
-      message: "Email is not valid"
-    }),
-    password: composeValidators(isRequired, hasLengthBetween(6, 40))(
-      "Password"
-    ),
-    password2: composeValidators(
-      isRequired,
-      hasLengthBetween(6, 40),
-      matchesField("password")
-    )({
-      message: "Passwords do not match"
-    }),
-    termsAccepted: isOneOf([true, "true"])({
-      message: "Please accept the terms and conditions"
-    })
-  });
-
-  const handleFieldsChange = e => {
-    if (e.target.name === "termsAccepted") {
-      setFormFields({
-        ...formFields,
-        termsAccepted: !formFields.termsAccepted
-      });
-    } else {
-      setFormFields({
-        ...formFields,
-        [e.target.name]: e.target.value
-      });
-    }
-
-    //Remove field error
-    delete formErrors[e.target.name];
-  };
-
-  const submitForm = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const errors = formValidator(formFields);
-    setFormErrors(errors);
-
-    //check if no errors
-    if (Object.entries(errors).length === 0 && errors.constructor === Object) {
-      try {
-        setFormLoader(true);
-        const res = await axios.post(`${backendURL}/signup`, formFields);
-        alert(`Welcome ${res.data.firstName} ${res.data.lastName}`);
-        //Remove loader and reset fields
-        setFormLoader(false);
-        setFormFields({
-          firstName: "",
-          lastName: "",
-          password: "",
-          userName: "",
-          email: "",
-          password2: "",
-          termsAccepted: false
-        });
-      } catch (e) {
-        setFormErrors(e.response.data);
-        setFormLoader(false);
+    props.form.validateFieldsAndScroll(async (err, values) => {
+      if (!err) {
+        setLoading(true);
+        try {
+          await axios.post(`${backendURL}/signup`, values);
+          setLoading(false);
+          props.form.resetFields();
+          Modal.success({
+            title: "You signed up successfully",
+            content: "You can login now",
+            okText: "Login",
+            onOk: () => props.history.push("/signin")
+          });
+        } catch (e) {
+          setLoading(false);
+          let errors = e.response.data;
+          console.log(errors);
+          Object.keys(errors).map(function(key) {
+            props.form.setFields({
+              [key]: {
+                value: values[key],
+                errors: errors[key].map(err => new Error(err))
+              }
+            });
+          });
+        }
       }
+    });
+  };
+
+  const handleConfirmBlur = e => {
+    const value = e.target.value;
+    setConfirmDirty(confirmDirty || !!value);
+  };
+
+  const compareToFirstPassword = (rule, value, callback) => {
+    const form = props.form;
+    if (value && value !== form.getFieldValue("password")) {
+      callback("Password doesn't match");
+    } else {
+      callback();
     }
   };
+
+  const validateToNextPassword = (rule, value, callback) => {
+    const form = props.form;
+    if (value && confirmDirty) {
+      form.validateFields(["password2"], { force: true });
+    }
+    callback();
+  };
+
+  const { getFieldDecorator } = props.form;
 
   return (
     <StyledContainer>
       <StyledHeader>KLATCH</StyledHeader>
       <StyledText>Please complete to create your account.</StyledText>
 
-      <form action="" method="post" onSubmit={submitForm}>
-        <div style={{ display: "flex" }}>
-          <InputField
-            disabled={formLoading}
-            error={formErrors.firstName}
-            value={formFields.firstName}
-            onChange={handleFieldsChange}
-            withMargin
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            autoComplete="first name"
-          />
-          <InputField
-            disabled={formLoading}
-            error={formErrors.lastName}
-            value={formFields.lastName}
-            onChange={handleFieldsChange}
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            autoComplete="last name"
-          />
-        </div>
-        <InputField
-          disabled={formLoading}
-          error={formErrors.userName}
-          value={formFields.userName}
-          onChange={handleFieldsChange}
-          type="text"
-          placeholder="Username"
-          name="userName"
-          autoComplete="user name"
-        />
-        <InputField
-          disabled={formLoading}
-          error={formErrors.email}
-          value={formFields.email}
-          onChange={handleFieldsChange}
-          type="email"
-          placeholder="Email"
-          name="email"
-          autoComplete="email"
-        />
-        <InputField
-          disabled={formLoading}
-          error={formErrors.password}
-          value={formFields.password}
-          onChange={handleFieldsChange}
-          type="password"
-          placeholder="Password"
-          name="password"
-          autoComplete="new-password"
-        />
-        <InputField
-          disabled={formLoading}
-          error={formErrors.password2}
-          value={formFields.password2}
-          onChange={handleFieldsChange}
-          type="password"
-          placeholder="Confirm Password"
-          name="password2"
-          autoComplete="new-password"
-        />
-
+      <Form onSubmit={handleSubmit} className="login-form">
         <div style={{ textAlign: "left" }}>
-          <label htmlFor="termsAccepted">
-            <input
-              disabled={formLoading}
-              defaultChecked={formFields.termsAccepted}
-              onChange={handleFieldsChange}
-              type="checkbox"
-              id="termsAccepted"
-              style={{ marginRight: "0.7rem" }}
-              name="termsAccepted"
-            />
-            <StyledLink disabled={formLoading}>
-              I agree with the terms and conditions
-            </StyledLink>
-          </label>
-          <p
+          <SubContainer>
+            <Form.Item style={{ marginRight: 5 }}>
+              {getFieldDecorator("firstName", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Please input your first name"
+                  },
+                  {
+                    min: 3,
+                    max: 40,
+                    message: "First name must be between 3 and 40 characters"
+                  }
+                ]
+              })(
+                <StyledInput
+                  disabled={loading}
+                  placeholder="First Name"
+                  autoComplete="given-name"
+                />
+              )}
+            </Form.Item>
+            <Form.Item style={{ marginLeft: 5 }}>
+              {getFieldDecorator("lastName", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Please input your last name"
+                  },
+                  {
+                    min: 3,
+                    max: 40,
+                    message: "Last name must be between 3 and 40 characters"
+                  }
+                ]
+              })(
+                <StyledInput
+                  disabled={loading}
+                  placeholder="Last name"
+                  autoComplete="family-name"
+                />
+              )}
+            </Form.Item>
+          </SubContainer>
+          <Form.Item>
+            {getFieldDecorator("userName", {
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your Username"
+                },
+                {
+                  min: 3,
+                  max: 40,
+                  message: "Username must be between 3 and 40 characters"
+                }
+              ]
+            })(
+              <StyledInput
+                disabled={loading}
+                placeholder="Username"
+                autoComplete="username"
+              />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator("email", {
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your Email"
+                },
+                {
+                  pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  message: "Email is not valid"
+                }
+              ]
+            })(
+              <StyledInput
+                disabled={loading}
+                placeholder="Email"
+                autoComplete="email"
+              />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator("password", {
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your password"
+                },
+                {
+                  validator: validateToNextPassword
+                }
+              ]
+            })(
+              <StyledInput
+                disabled={loading}
+                placeholder="Password"
+                autoComplete="new-password"
+                type="password"
+              />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator("password2", {
+              rules: [
+                {
+                  required: true,
+                  message: "Please confirm your password"
+                },
+                {
+                  validator: compareToFirstPassword
+                }
+              ]
+            })(
+              <StyledInput
+                disabled={loading}
+                placeholder="Confirm Password"
+                autoComplete="new-password"
+                type="password"
+                onBlur={handleConfirmBlur}
+              />
+            )}
+          </Form.Item>
+        </div>
+        <div style={{ textAlign: "left" }}>
+          <Form.Item>
+            {getFieldDecorator("terms", {
+              valuePropName: "checked",
+              initialValue: false,
+              rules: [
+                {
+                  required: true,
+                  transform: value => value || undefined,
+                  type: "boolean",
+                  message: "Please agree the terms and conditions."
+                }
+              ]
+            })(
+              <Checkbox disabled={loading} name="terms">
+                I agree with the terms and conditions
+              </Checkbox>
+            )}
+          </Form.Item>
+        </div>
+        <ButtonContainer>
+          <StyledButton
+            loading={loading}
+            type="primary"
+            htmlType="submit"
+            size={"large"}
             style={{
-              color: "#ab2330",
-              fontSize: "0.7rem",
-              margin: 0
+              margin: "1rem",
+              height: 50,
+              paddingLeft: "4rem",
+              paddingRight: "4rem"
             }}
           >
-            {formErrors.termsAccepted}
-          </p>
-        </div>
-
-        <ButtonContainer>
-          <MainButton
-            loading={formLoading}
-            solid
-            type="submit"
-            disabled={formLoading}
-          >
             Sign Up
-          </MainButton>
+          </StyledButton>
         </ButtonContainer>
-        <Link to="signIn">
-          <SignInLink>Already have an account? Sign in</SignInLink>
-        </Link>
-      </form>
+      </Form>
+      <Link to="signIn">
+        <SignInLink>Already have an account? Sign in</SignInLink>
+      </Link>
     </StyledContainer>
   );
 };
 
-export default SignUp;
+export default Form.create({ name: "SignUp" })(SignUp);

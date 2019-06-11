@@ -1,6 +1,6 @@
 import React from "react";
-import SignIn from "./SignInAnt";
-import SignUp from "./SignUpAnt";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 import { Container, RightSide, LeftSide } from "./Sign.styles";
 
 const Sign = props => {
