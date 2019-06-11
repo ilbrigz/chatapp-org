@@ -22,7 +22,8 @@ const CreateRoomForm = props => {
           Modal.success({
             title: 'Your room was created',
             content: 'You can always add more friends to your room',
-            okText: "Ok",
+            okText: "Visit Room",
+            maskClosable: true,
             onOk: () => {
               console.log("XXXX")
             }
