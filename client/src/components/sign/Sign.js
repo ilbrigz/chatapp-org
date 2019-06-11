@@ -1,6 +1,6 @@
 import React from "react";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import SignIn from "./SignInAnt";
+import SignUp from "./SignUpAnt";
 import { Container, RightSide, LeftSide } from "./Sign.styles";
 
 const Sign = props => {
@@ -18,7 +18,11 @@ const Sign = props => {
         )}
       </LeftSide>
       <RightSide>
-        {props.location.pathname === "/signIn" ? <SignIn /> : <SignUp />}
+        {props.location.pathname === "/signIn" ? (
+          <SignIn {...props} />
+        ) : (
+          <SignUp {...props} />
+        )}
       </RightSide>
     </Container>
   );

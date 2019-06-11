@@ -12,7 +12,7 @@ module.exports = override(
       "@layout-header-background": "#43425D",
       "@menu-dark-submenu-bg": "#3B3A53",
       "@layout-trigger-background": "#3B3A53",
-      "@primary-color": "#575679",
+      "@primary-color": "#43415D",
       "@link-color": "#1890ff",
       "@layout-body-background": "#F0F0F7",
       "@warning-color": "#faad14",

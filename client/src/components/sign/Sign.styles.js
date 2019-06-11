@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Button, Input } from "antd";
 
 export const Container = styled.div`
   display: flex;
@@ -50,4 +51,30 @@ export const RightSide = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const StyledInput = styled(Input)`
+  border-right: none;
+  border-left: none;
+  border-top: none;
+  border-radius: 0;
+  border-bottom-width: 2px;
+  padding-bottom: 1rem;
+  height: auto;
+  box-shadow: none !important;
+  ::placeholder {
+    color: ${props => props.theme.mainColor};
+    font-size: 0.8rem;
+  }
+`;
+
+export const StyledButton = styled(Button)`
+  box-shadow: 0 4px 17px 0 rgba(67, 66, 93, 0.05),
+    0 6px 20px 0 rgba(67, 66, 93, 0.1);
+  font-size: 1.2rem;
+  border: 1px solid ${props => props.theme.mainColor};
+  &:hover {
+    box-shadow: 0 4px 17px 0 rgba(67, 66, 93, 0.2),
+      0 6px 20px 0 rgba(67, 66, 93, 0.4);
+  }
 `;

@@ -1,10 +1,13 @@
 import React from "react";
-import { Layout, List, Typography, Icon, Menu, Dropdown } from "antd";
+import { List, Typography, Icon, Menu, Dropdown } from "antd";
 import { Link } from "react-router-dom";
-import {StyledLink, StyledListContainer, LayoutContainer} from "./DashboardHome.styles";
-import {data2, data1, menu1Links, menu2Links} from "./data";
+import {
+  StyledLink,
+  StyledListContainer,
+  LayoutContainer
+} from "./DashboardHome.styles";
+import { data2, data1, menu1Links, menu2Links } from "./data";
 import CreateRoomForm from "./CreateRoomForm";
-
 
 // const count = 3;
 // const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
@@ -62,11 +65,7 @@ const DashboardHome = () => {
     <Menu>
       {menu1Links.map((link, i) => (
         <Menu.Item key={i}>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={link.link}
-          >
+          <a target="_blank" rel="noopener noreferrer" href={link.link}>
             {link.title}
           </a>
         </Menu.Item>
@@ -78,11 +77,7 @@ const DashboardHome = () => {
     <Menu>
       {menu2Links.map((link, i) => (
         <Menu.Item key={i}>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={link.link}
-          >
+          <a target="_blank" rel="noopener noreferrer" href={link.link}>
             {link.title}
           </a>
         </Menu.Item>
@@ -90,7 +85,7 @@ const DashboardHome = () => {
     </Menu>
   );
 
-  const TableTitle = (props) => (
+  const TableTitle = props => (
     <div
       style={{
         display: "flex",
@@ -100,7 +95,7 @@ const DashboardHome = () => {
       }}
     >
       <Typography.Title level={2}>{props.title}</Typography.Title>
-      <Dropdown overlay={props.menu}>
+      <Dropdown overlay={props.menu} trigger={["click"]}>
         <StyledLink className="ant-dropdown-link" href="#">
           {props.link} <Icon type="down" />
         </StyledLink>
@@ -108,7 +103,7 @@ const DashboardHome = () => {
     </div>
   );
 
-  const TableFooter = (props) => (
+  const TableFooter = props => (
     <Link to={props.room}>
       <span style={{ textAlign: "right", display: "block" }}>
         <Icon type="caret-right" style={{ marginRight: 5 }} />
@@ -123,7 +118,9 @@ const DashboardHome = () => {
         <List
           itemLayout="horizontal"
           dataSource={data1}
-          header={<TableTitle title="Join a Room" menu={menu1} link="Most Popular" />}
+          header={
+            <TableTitle title="Join a Room" menu={menu1} link="Most Popular" />
+          }
           footer={<TableFooter room="/rooms" title="Show All Rooms" />}
           renderItem={item => (
             <List.Item>
@@ -157,7 +154,7 @@ const DashboardHome = () => {
           )}
         />
       </StyledListContainer>
-      <CreateRoomForm/>
+      <CreateRoomForm />
     </LayoutContainer>
   );
 };

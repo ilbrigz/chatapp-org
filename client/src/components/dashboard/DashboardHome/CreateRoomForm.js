@@ -4,7 +4,8 @@ import {
   StyledContainer,
   StyledHeader,
   FadedP,
-  radioStyle, FadedSpan
+  radioStyle,
+  FadedSpan
 } from "./CreateRoomForm.styles";
 
 const CreateRoomForm = props => {
@@ -14,21 +15,21 @@ const CreateRoomForm = props => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values)
+        console.log(values);
         setLoading(true);
         setTimeout(() => {
           setLoading(false);
           props.form.resetFields();
           Modal.success({
-            title: 'Your room was created',
-            content: 'You can always add more friends to your room',
+            title: "Your room was created",
+            content: "You can always add more friends to your room",
             okText: "Visit Room",
             maskClosable: true,
             onOk: () => {
-              console.log("XXXX")
+              console.log("XXXX");
             }
-          })
-        }, 2000)
+          });
+        }, 2000);
       }
     });
   };
@@ -54,7 +55,8 @@ const CreateRoomForm = props => {
                 {
                   required: true,
                   message: "Please input the room name!"
-                }, {
+                },
+                {
                   min: 3,
                   max: 40,
                   message: "Invalid Room name"
@@ -69,7 +71,8 @@ const CreateRoomForm = props => {
                 {
                   required: true,
                   message: "Please input your username or email!"
-                }, {
+                },
+                {
                   min: 3,
                   max: 40,
                   message: "Invalid Username or Email"
@@ -88,10 +91,14 @@ const CreateRoomForm = props => {
           <FadedP>Make my chatroom: (required)</FadedP>
           <Radio.Group defaultValue={1} disabled={loading} name="roomPrivacy">
             <Radio style={radioStyle} value={1}>
-              <FadedSpan>Public - all users can join, even without an invitation</FadedSpan>
+              <FadedSpan>
+                Public - all users can join, even without an invitation
+              </FadedSpan>
             </Radio>
             <Radio style={radioStyle} value={2}>
-              <FadedSpan>Private - only users with admin invitation can join</FadedSpan>
+              <FadedSpan>
+                Private - only users with admin invitation can join
+              </FadedSpan>
             </Radio>
           </Radio.Group>
           <div>

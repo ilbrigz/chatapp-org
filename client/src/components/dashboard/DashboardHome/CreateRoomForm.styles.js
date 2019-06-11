@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Typography, Checkbox } from "antd";
+import { Typography } from "antd";
 
 export const StyledContainer = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ export const StyledContainer = styled.div`
     flex: 1 0 170px;
     margin: 0 2rem;
     @media screen and (max-width: 500px) {
-    margin: 0 1rem;
+      margin: 0 1rem;
     }
     input[type="text"] {
       height: 40px;
@@ -30,7 +30,7 @@ export const StyledHeader = styled(Typography.Title)`
 `;
 
 export const FadedP = styled.p`
-  color: ${props => props.theme.fadedP}
+  color: ${props => props.theme.fadedP};
 `;
 
 export const FadedSpan = styled.span`
@@ -38,9 +38,8 @@ export const FadedSpan = styled.span`
   white-space: normal;
 `;
 
-
 export const radioStyle = {
-  display: 'block',
-  height: '30px',
-  lineHeight: '30px',
+  display: "block",
+  height: "30px",
+  lineHeight: "30px"
 };
