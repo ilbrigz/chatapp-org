@@ -18,7 +18,11 @@ const Sign = props => {
         )}
       </LeftSide>
       <RightSide>
-        {props.location.pathname === "/signIn" ? <SignIn /> : <SignUp />}
+        {props.location.pathname === "/signIn" ? (
+          <SignIn {...props} />
+        ) : (
+          <SignUp {...props} />
+        )}
       </RightSide>
     </Container>
   );
