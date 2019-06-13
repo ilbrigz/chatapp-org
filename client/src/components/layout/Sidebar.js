@@ -1,17 +1,40 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Layout, Menu, Icon } from "antd";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import themeContext from "../../context/themeContext";
 
 const StyledSideBar = styled(Layout.Sider)`
   &:not(.ant-layout-sider-collapsed) {
-    flex: 0 0 260px !important;
-    max-width: 260px !important;
-    min-width: 260px !important;
-    width: 260px !important;
+    min-width: ${props =>
+      props.menu === "opened"
+        ? "260px !important"
+        : props.menu === "closed"
+          ? "80px !important"
+          : "0px !important"};
+    width: ${props =>
+      props.menu === "opened"
+        ? "260px !important"
+        : props.menu === "closed"
+          ? "80px !important"
+          : "0px !important"};
     .ant-layout-sider-trigger {
-      width: 260px !important;
+      min-width: ${props =>
+        props.menu === "opened"
+          ? "260px !important"
+          : props.menu === "closed"
+            ? "80px !important"
+            : "0px !important"};
+      width: ${props =>
+        props.menu === "opened"
+          ? "260px !important"
+          : props.menu === "closed"
+            ? "80px !important"
+            : "0px !important"};
     }
+  }
+  .ant-layout-sider-children {
+    overflow: scroll;
   }
 `;
 
@@ -57,44 +80,41 @@ const StyledItem = styled(Menu.Item)`
 const StyledSubMenu = styled(Menu.SubMenu)`
   position: relative;
   overflow: hidden;
-  &::before {
-    content: "";
-    position: absolute;
-    left: 3px;
-    top: 0;
-    width: 5px;
-    height: 48px;
-    background: ${props => props.theme.highlightColor};
-    opacity: 0;
-    transition: all 0.2s ease-in;
-  }
-  &.ant-menu-item-selected,
   &:hover {
     background: rgba(0, 0, 0, 0.1) !important;
-    &::before {
-      opacity: 1;
-    }
+  }
+  .ant-menu-sub {
+    margin-left: ${props => (props.menu === "closed" ? "82px" : "0")};
   }
 `;
 
-const Sidebar = (props) => {
-  const [collapsed, setCollapsed] = useState(false);
+const Sidebar = props => {
+  const context = useContext(themeContext);
+  console.log(context);
+  const handleCloseMenu = () => {
+    if (context.menuState === "opened") {
+      context.updateMenuState("closed");
+    } else {
+      context.updateMenuState("opened");
+    }
+  };
 
   return (
     <StyledSideBar
       collapsible
-      collapsed={collapsed}
-      onCollapse={collapsed => setCollapsed(collapsed)}
+      collapsed={context.menuState === "closed"}
+      onCollapse={handleCloseMenu}
       breakpoint="md"
-      // style={{
-      //   overflow: 'auto',
-      //   height: '100vh',
-      //   position: 'fixed',
-      //   left: 0,
-      //   zIndex: 10000
-      // }}
+      style={{
+        overflow: "auto",
+        height: "100vh",
+        position: "fixed",
+        left: 0,
+        zIndex: 10000
+      }}
+      menu={context.menuState}
     >
-      {collapsed ? (
+      {context.menuState === "closed" ? (
         <StyledLogoIcon className="logo">
           <Icon type="pie-chart" />
         </StyledLogoIcon>
@@ -102,7 +122,13 @@ const Sidebar = (props) => {
         <StyledLogo className="logo">KLATCH</StyledLogo>
       )}
 
-      <Menu theme="dark" defaultSelectedKeys={[props.match.isExact ? "home" : props.location.pathname.split("/")[2]]} mode="inline">
+      <Menu
+        theme="dark"
+        defaultSelectedKeys={[
+          props.match.isExact ? "home" : props.location.pathname.split("/")[2]
+        ]}
+        mode="inline"
+      >
         <StyledItem key="home">
           <Link to="/dashboard">
             <Icon type="home" theme="filled" />
@@ -140,6 +166,7 @@ const Sidebar = (props) => {
           </Link>
         </StyledItem>
         <StyledSubMenu
+          menu={context.menuState}
           key="sub1"
           title={
             <span>

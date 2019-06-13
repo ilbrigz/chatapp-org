@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
 import Loadable from "react-loadable";
-import styled from "styled-components";
+import ThemeContext from "./context/themeContext";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Sidebar from "./components/layout/Sidebar";
 import PageLoader from "./components/common/PageLoader";
+import themeReducer from "./context/themeReducer";
+import { UPDATE_MENU } from "./context/types";
 
 const AsyncHome = Loadable({
   loader: () => import("./components/main/Home"),
@@ -25,14 +27,15 @@ const AsyncActiveRooms = Loadable({
   loading: PageLoader
 });
 
-const StyledLayout = styled(Layout)`
-  //min-height: 100vh;
-  //@media screen and (min-width: 769px) {
-  //  margin-left: 260px;
-  //}
-`;
-
 export default () => {
+  const [state, dispatch] = useReducer(themeReducer, { menuState: "opened" });
+
+  const updateMenu = payload =>
+    dispatch({
+      type: UPDATE_MENU,
+      payload
+    });
+
   return (
     <React.Fragment>
       <Switch>
@@ -42,23 +45,43 @@ export default () => {
       </Switch>
       <Route
         path="/dashboard"
-        render={(props) => (
-          <Layout>
-            <Sidebar {...props} />
-            <StyledLayout>
-              <Header />
-              <Switch>
-                <Route path="/dashboard" exact component={AsyncDashboardHome} />
-                <Route
-                  path="/dashboard/activeRooms"
-                  component={AsyncActiveRooms}
-                />
-                {/*<Route path="/error" component={AsyncNotFound} />*/}
-                {/*<Route component={AsyncNotFound} />*/}
-              </Switch>
-              <Footer />
-            </StyledLayout>
-          </Layout>
+        render={props => (
+          <ThemeContext.Provider
+            value={{
+              menuState: state.menuState,
+              updateMenuState: updateMenu
+            }}
+          >
+            <Layout>
+              <Sidebar {...props} />
+              <Layout
+                style={{
+                  marginLeft:
+                    state.menuState === "opened"
+                      ? "260px"
+                      : state.menuState === "closed"
+                        ? "80px"
+                        : "0"
+                }}
+              >
+                <Header />
+                <Switch>
+                  <Route
+                    path="/dashboard"
+                    exact
+                    component={AsyncDashboardHome}
+                  />
+                  <Route
+                    path="/dashboard/activeRooms"
+                    component={AsyncActiveRooms}
+                  />
+                  {/*<Route path="/error" component={AsyncNotFound} />*/}
+                  {/*<Route component={AsyncNotFound} />*/}
+                </Switch>
+                <Footer />
+              </Layout>
+            </Layout>
+          </ThemeContext.Provider>
         )}
       />
     </React.Fragment>

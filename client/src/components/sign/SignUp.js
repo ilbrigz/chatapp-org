@@ -36,9 +36,8 @@ const SignUp = props => {
         } catch (e) {
           setLoading(false);
           let errors = e.response.data;
-          console.log(errors);
           Object.keys(errors).map(function(key) {
-            props.form.setFields({
+            return props.form.setFields({
               [key]: {
                 value: values[key],
                 errors: errors[key].map(err => new Error(err))

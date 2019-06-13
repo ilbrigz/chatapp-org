@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Layout, Menu, Input, AutoComplete, Icon, Avatar } from "antd";
 import styled from "styled-components";
+import themeContext from "../../context/themeContext";
 
 const StyledHeader = styled(Menu)`
   display: flex;
@@ -23,24 +24,43 @@ const StyledSearch = styled(Input.Search)`
 `;
 
 const StyledItemGroup = styled(Menu.SubMenu)`
-  float: right !important;
   position: absolute !important;
-  right: 270px;
+  right: ${props =>
+    props.menu === "opened"
+      ? "230px"
+      : props.menu === "closed"
+        ? "50px"
+        : "-30px"};
   height: 64px;
   min-width: 200px;
 `;
 
-const Header = () => {
+const MenuIconCollapse = styled(Menu.Item)`
+  border-bottom: none !important;
+  padding-left: 0;
+`;
+
+const Header = props => {
   const [dataSource, setDataSource] = useState([]);
+  const context = useContext(themeContext);
+
   const handleSearch = value => {
     setDataSource(!value ? [] : [value, value + value, value + value + value]);
+  };
+
+  const handleHideMenu = () => {
+    if (context.menuState === "hidden") {
+      context.updateMenuState("closed");
+    } else {
+      context.updateMenuState("hidden");
+    }
   };
 
   const onSelect = value => console.log("onSelect", value);
 
   return (
     <Layout.Header
-      style={{ position: "fixed", zIndex: 1, width: "100%", paddingLeft: 0 }}
+      style={{ position: "fixed", zIndex: 1, width: "100%", padding: 0 }}
     >
       <StyledHeader
         theme="light"
@@ -48,6 +68,14 @@ const Header = () => {
         defaultSelectedKeys={["2"]}
         style={{ lineHeight: "64px" }}
       >
+        <MenuIconCollapse>
+          <Icon
+            className="trigger"
+            type={context.menuState === "hidden" ? "menu-unfold" : "menu-fold"}
+            onClick={handleHideMenu}
+            style={{ padding: 5 }}
+          />
+        </MenuIconCollapse>
         <AutoComplete
           dataSource={dataSource}
           style={{ width: 300 }}
@@ -68,6 +96,7 @@ const Header = () => {
               <Avatar size={"large"}>MD</Avatar>
             </span>
           }
+          menu={context.menuState}
         >
           <Menu.ItemGroup>
             <Menu.Item key="setting:1">
