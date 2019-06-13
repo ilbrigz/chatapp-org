@@ -13,7 +13,9 @@ export const Container = styled.div`
 `;
 
 export const LeftSide = styled.div`
-  background: linear-gradient(20deg, #5a55aa, #242348);
+  //background: linear-gradient(20deg, #5a55aa, #242348);
+  background: url(${props => props.bgImage}) no-repeat bottom center;
+  background-size: cover;
   align-self: stretch;
   display: flex;
   justify-content: center;

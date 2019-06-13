@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Layout, Menu, Icon } from "antd";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+
 const StyledSideBar = styled(Layout.Sider)`
   &:not(.ant-layout-sider-collapsed) {
     flex: 0 0 260px !important;
@@ -76,7 +77,7 @@ const StyledSubMenu = styled(Menu.SubMenu)`
   }
 `;
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -85,6 +86,13 @@ const Sidebar = () => {
       collapsed={collapsed}
       onCollapse={collapsed => setCollapsed(collapsed)}
       breakpoint="md"
+      // style={{
+      //   overflow: 'auto',
+      //   height: '100vh',
+      //   position: 'fixed',
+      //   left: 0,
+      //   zIndex: 10000
+      // }}
     >
       {collapsed ? (
         <StyledLogoIcon className="logo">
@@ -94,14 +102,14 @@ const Sidebar = () => {
         <StyledLogo className="logo">KLATCH</StyledLogo>
       )}
 
-      <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-        <StyledItem key="1">
+      <Menu theme="dark" defaultSelectedKeys={[props.match.isExact ? "home" : props.location.pathname.split("/")[2]]} mode="inline">
+        <StyledItem key="home">
           <Link to="/dashboard">
             <Icon type="home" theme="filled" />
             <span>Dashboard</span>
           </Link>
         </StyledItem>
-        <StyledItem key="2">
+        <StyledItem key="activeRooms">
           <Link to="/dashboard/activeRooms">
             <Icon type="message" theme="filled" />
             <span>Active Rooms</span>

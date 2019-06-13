@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
 import Loadable from "react-loadable";
+import styled from "styled-components";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Sidebar from "./components/layout/Sidebar";
@@ -24,6 +25,13 @@ const AsyncActiveRooms = Loadable({
   loading: PageLoader
 });
 
+const StyledLayout = styled(Layout)`
+  //min-height: 100vh;
+  //@media screen and (min-width: 769px) {
+  //  margin-left: 260px;
+  //}
+`;
+
 export default () => {
   return (
     <React.Fragment>
@@ -34,10 +42,10 @@ export default () => {
       </Switch>
       <Route
         path="/dashboard"
-        render={() => (
+        render={(props) => (
           <Layout>
-            <Sidebar />
-            <Layout style={{ minHeight: "100vh" }}>
+            <Sidebar {...props} />
+            <StyledLayout>
               <Header />
               <Switch>
                 <Route path="/dashboard" exact component={AsyncDashboardHome} />
@@ -49,7 +57,7 @@ export default () => {
                 {/*<Route component={AsyncNotFound} />*/}
               </Switch>
               <Footer />
-            </Layout>
+            </StyledLayout>
           </Layout>
         )}
       />

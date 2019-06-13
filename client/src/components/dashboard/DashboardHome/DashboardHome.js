@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import {
   StyledLink,
   StyledListContainer,
-  LayoutContainer
+  LayoutContainer,
+  MainHeader
 } from "./DashboardHome.styles";
 import { data2, data1, menu1Links, menu2Links } from "./data";
 import CreateRoomForm from "./CreateRoomForm";
@@ -114,6 +115,7 @@ const DashboardHome = () => {
 
   return (
     <LayoutContainer>
+      <MainHeader level={2}>Dashboard</MainHeader>
       <StyledListContainer>
         <List
           itemLayout="horizontal"

@@ -6,7 +6,7 @@ import {
   FadedP,
   radioStyle,
   FadedSpan
-} from "./CreateRoomForm.styles";
+} from "./DashboardHome.styles";
 
 const CreateRoomForm = props => {
   const [loading, setLoading] = useState(false);

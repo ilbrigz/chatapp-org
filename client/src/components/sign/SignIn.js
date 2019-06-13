@@ -108,7 +108,7 @@ const SignIn = props => {
           >
             Login
           </StyledButton>
-          <Link to="/signup">
+          <Link to="/signUp">
             <StyledButton
               size={"large"}
               style={{
