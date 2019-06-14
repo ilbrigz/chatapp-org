@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Link } from "react-router-dom";
 import { Layout } from "antd";
 import Loadable from "react-loadable";
 import Header from "./components/layout/Header";
@@ -27,6 +27,27 @@ const AsyncActiveRooms = Loadable({
 export default () => {
   return (
     <React.Fragment>
+      <div
+        style={{
+          position: "fixed",
+          top: "1rem",
+          left: "1rem",
+          backgroundColor: "yellow",
+          zIndex: 1
+        }}
+      >
+        <span>
+          <Link to="/signIn">singIn</Link>
+        </span>
+        <br />
+        <span>
+          <Link to="/signUp">signUp</Link>
+        </span>
+        <br />
+        <span>
+          <Link to="/dashboard">dashboard</Link>
+        </span>
+      </div>
       <Switch>
         <Route path="/" component={AsyncHome} exact />
         <Route path="/signUp" component={AsyncSign} exact />

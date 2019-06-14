@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Radio, Modal } from "antd";
+import axios from "axios";
 import {
   StyledContainer,
   StyledHeader,
@@ -7,29 +8,35 @@ import {
   radioStyle,
   FadedSpan
 } from "./CreateRoomForm.styles";
+import { backendURL } from "../../../variables";
 
 const CreateRoomForm = props => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = e => {
     e.preventDefault();
-    props.form.validateFields((err, values) => {
+    props.form.validateFields(async (err, values) => {
+      setLoading(true);
+      try {
+        await axios.post(`${backendURL}/createRoom`, values);
+        setLoading(false);
+        props.form.resetFields();
+        Modal.success({
+          title: "Your room was created",
+          content: "You can always add more friends to your room",
+          okText: "Visit Room",
+          maskClosable: true,
+          onOk: () => {
+            console.log("XXXX");
+          }
+        });
+      } catch (e) {
+        setLoading(false);
+        let errors = e.response.data;
+        console.log(errors);
+      }
+
       if (!err) {
-        console.log(values);
-        setLoading(true);
-        setTimeout(() => {
-          setLoading(false);
-          props.form.resetFields();
-          Modal.success({
-            title: "Your room was created",
-            content: "You can always add more friends to your room",
-            okText: "Visit Room",
-            maskClosable: true,
-            onOk: () => {
-              console.log("XXXX");
-            }
-          });
-        }, 2000);
       }
     });
   };
@@ -89,18 +96,28 @@ const CreateRoomForm = props => {
         </div>
         <div>
           <FadedP>Make my chatroom: (required)</FadedP>
-          <Radio.Group defaultValue={1} disabled={loading} name="roomPrivacy">
-            <Radio style={radioStyle} value={1}>
-              <FadedSpan>
-                Public - all users can join, even without an invitation
-              </FadedSpan>
-            </Radio>
-            <Radio style={radioStyle} value={2}>
-              <FadedSpan>
-                Private - only users with admin invitation can join
-              </FadedSpan>
-            </Radio>
-          </Radio.Group>
+          {getFieldDecorator("isPublic", {
+            initialValue: true,
+            rules: [
+              {
+                required: true,
+                message: "Please Choose your option!"
+              }
+            ]
+          })(
+            <Radio.Group disabled={loading} name="roomPrivacy">
+              <Radio style={radioStyle} value={true}>
+                <FadedSpan>
+                  Public - all users can join, even without an invitation
+                </FadedSpan>
+              </Radio>
+              <Radio style={radioStyle} value={false}>
+                <FadedSpan>
+                  Private - only users with admin invitation can join
+                </FadedSpan>
+              </Radio>
+            </Radio.Group>
+          )}
           <div>
             <Button
               loading={loading}

@@ -17,6 +17,7 @@ const chatContoller = require("./controllers/chatConroller");
 
 // api routes
 const authRoutes = require("./routes/authRoutes");
+const roomRoutes = require("./routes/roomRoutes");
 
 const port = process.env.PORT || 8080;
 
@@ -47,6 +48,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", authRoutes);
+app.use("/", roomRoutes);
 
 app.get("/", (req, res, next) => res.send("my backend api"));
 
