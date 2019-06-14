@@ -5,6 +5,23 @@ const uuidv4 = require("uuid/v4");
 require("dotenv").config();
 
 module.exports = {
+  roomById: (req, res, next, id) => {
+    Room.findById(id)
+      .populate("postedBy", "_id firstName")
+      .populate("subscribers", "_id firstName")
+      .populate("usersOnline", "_id firstName")
+      .populate("usersTyping", "_id firstName")
+      .populate("usersInvited", "_id firstName")
+      .exec((err, room) => {
+        if (err || !room) {
+          return res.status(400).json({
+            err
+          });
+        }
+        req.room = room;
+        next();
+      });
+  },
   createRoom: async (req, res) => {
     let roomExists = await Room.findOne({ roomName: req.body.roomName });
     if (roomExists)
@@ -37,5 +54,14 @@ module.exports = {
     await room.save();
 
     return res.status(200).json(room);
+  },
+  deleteRoom: async (req, res) => {
+    const room = req.room;
+    room.remove((err, room) => {
+      if (err) {
+        return res.status(400).json({ err });
+      }
+      return res.json({ message: "Room deleted successfully" });
+    });
   }
 };
