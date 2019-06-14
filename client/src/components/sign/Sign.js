@@ -11,31 +11,7 @@ const Sign = props => {
         path="/signIn"
         render={() => (
           <>
-          <LeftSide bgImage="images/sign-in.jpg">
-            <Route
-              path="/signIn"
-              render={() => (
-                <div>
-                  <p>
-                    Meet and connect with other professionals and like-minded
-                    individuals from all over the world.
-                  </p>
-                  <p>Expand your network--one chatroom at a time.</p>
-                </div>
-              )}
-            />
-          </LeftSide>
-          <RightSide>
-            <SignIn {...props} />
-          </RightSide>
-          </>
-        )}
-      />
-      <Route
-        path="/signUp"
-        render={() => (
-          <>
-            <LeftSide bgImage="images/sign-up.jpg">
+            <LeftSide bgImage="/images/sign-in.jpg">
               <Route
                 path="/signIn"
                 render={() => (
@@ -49,6 +25,17 @@ const Sign = props => {
                 )}
               />
             </LeftSide>
+            <RightSide>
+              <SignIn {...props} />
+            </RightSide>
+          </>
+        )}
+      />
+      <Route
+        path="/signUp"
+        render={() => (
+          <>
+            <LeftSide bgImage="/images/sign-up.jpg" />
             <RightSide>
               <SignUp {...props} />
             </RightSide>

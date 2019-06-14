@@ -1,6 +1,6 @@
 export const data1 = [
   {
-    title: "Los Angeles",
+    title: "Web Developers",
     id: "chat1"
   },
   {
@@ -153,7 +153,7 @@ export const dataChat = {
       name: "@davidj",
       avatar: "SM",
       message:
-        "Ant Design, a design language for background applications, is refined by Ant UED Team Ant Design, a design language for background applications, is refined by Ant UED Team"
+        "Lorem ipsum dolor sit amet Consectetu Lorem ipsum dolor sit amet Consectetur…"
     }
   ],
   chat3: [],

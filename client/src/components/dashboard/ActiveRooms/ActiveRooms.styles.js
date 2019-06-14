@@ -31,8 +31,11 @@ export const StyledListContainer = styled.div`
   flex-flow: row wrap;
   .ant-list-items,
   .ant-empty {
-    height: 600px;
+    height: 450px;
     overflow: scroll;
+    @media screen and (max-width: 992px) {
+      height: 350px;
+    }
   }
   .ant-empty {
     display: flex;
@@ -44,8 +47,16 @@ export const StyledListContainer = styled.div`
 
 export const ListHeader = styled(Typography.Title)`
   border-bottom: 1px solid #f1f1f3;
-  padding: 2rem 2rem;
+  padding: 1rem 2rem;
+  height: 80px;
   margin-bottom: 0 !important;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  @media screen and (max-width: 992px) {
+    padding: 1rem;
+    height: 60px;
+  }
 `;
 export const LeftSide = styled.div`
   flex: 1 0 250px;
@@ -61,7 +72,10 @@ export const LeftSide = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-flow: row flow;
+      flex-flow: row wrap;
+      @media screen and (max-width: 992px) {
+        padding: 1rem 0.5rem;
+      }
     }
     &.active,
     &:hover {
@@ -111,5 +125,15 @@ export const StyledTextArea = styled(Input.TextArea)`
   color: ${props => props.theme.mainColor};
   ::placeholder {
     color: ${props => props.theme.secondaryColor};
+  }
+`;
+
+export const StyledInputSearch = styled(Input)`
+  input {
+    border: none;
+    padding: 0 5px 0 30px;
+  }
+  .ant-input-prefix {
+    left: 5px;
   }
 `;

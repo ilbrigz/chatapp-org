@@ -11,7 +11,6 @@ import { data2, data1, menu1Links, menu2Links } from "./data";
 import CreateRoomForm from "./CreateRoomForm";
 
 const DashboardHome = () => {
-
   const menu1 = (
     <Menu>
       {menu1Links.map((link, i) => (

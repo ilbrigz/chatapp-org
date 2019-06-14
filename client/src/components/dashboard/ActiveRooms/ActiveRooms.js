@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { List, Avatar, Empty } from "antd";
+import { List, Avatar, Empty, Icon } from "antd";
 import { Link } from "react-router-dom";
 import {
   LayoutContainer,
@@ -8,21 +8,41 @@ import {
   LeftSide,
   RightSide,
   ListHeader,
-  StyledTextArea
+  StyledTextArea,
+  StyledInputSearch
 } from "./ActiveRooms.styles";
 import { data1, dataChat, colorList } from "../DashboardHome/data";
 
 const ActiveRoom = props => {
   const roomChat = props.location.pathname.split("/")[3] || "chat1";
+
   const [chat, setChat] = useState(dataChat[roomChat]);
+  const [rooms, setRooms] = useState(data1);
+  const [title, setTitle] = useState("");
   const listContainerRef = useRef(null);
 
   useEffect(
     () => {
       setChat(dataChat[roomChat]);
+      let roomObj = data1.find(room => room.id === roomChat);
+      if (roomObj) {
+        setTitle(roomObj.title);
+      }
     },
     [roomChat]
   );
+
+  const handleSearchRooms = e => {
+    if (e.target.value) {
+      setRooms(
+        data1.filter(room =>
+          room.title.toLowerCase().includes(e.target.value.toLowerCase())
+        )
+      );
+    } else {
+      setRooms(data1);
+    }
+  };
 
   const handleAddChat = e => {
     e.preventDefault();
@@ -50,15 +70,25 @@ const ActiveRoom = props => {
     }
   };
 
+  if (!chat) {
+    return null;
+  }
+
   return (
     <LayoutContainer>
       <MainHeader level={2}>Active Rooms</MainHeader>
       <StyledListContainer>
         <LeftSide>
-          <ListHeader level={3}>Web Developers</ListHeader>
+          <ListHeader level={3}>
+            <StyledInputSearch
+              placeholder="Search messages or names"
+              prefix={<Icon type="search" />}
+              onChange={handleSearchRooms}
+            />
+          </ListHeader>
           <List
             itemLayout="horizontal"
-            dataSource={data1}
+            dataSource={rooms}
             renderItem={item => (
               <List.Item className={roomChat === item.id && "active"}>
                 <List.Item.Meta
@@ -74,7 +104,7 @@ const ActiveRoom = props => {
           />
         </LeftSide>
         <RightSide ref={listContainerRef}>
-          <ListHeader level={3}>Web Developers</ListHeader>
+          <ListHeader level={3}>{title}</ListHeader>
           {chat.length ? (
             <List
               itemLayout="horizontal"

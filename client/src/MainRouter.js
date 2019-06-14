@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import { Route, Switch } from "react-router-dom";
-import { Layout } from "antd";
+import { Layout, Empty } from "antd";
 import Loadable from "react-loadable";
 import styled from "styled-components";
 import ThemeContext from "./context/themeContext";
@@ -70,42 +70,56 @@ export default () => {
         <Route path="/" component={AsyncHome} exact />
         <Route path="/signUp" component={AsyncSign} exact />
         <Route path="/signIn" component={AsyncSign} exact />
+        <Route
+          path="/dashboard"
+          render={props => (
+            <ThemeContext.Provider
+              value={{
+                menuOpened: state.menuOpened,
+                updateMenuState: updateMenu
+              }}
+            >
+              <Layout>
+                <Sidebar {...props} />
+                <StyledMainLayout menu={state.menuOpened ? 1 : 0}>
+                  <Header />
+                  <Switch>
+                    <Route
+                      path="/dashboard"
+                      exact
+                      component={AsyncDashboardHome}
+                    />
+                    <Route
+                      path="/dashboard/activeRooms"
+                      component={AsyncActiveRooms}
+                    />
+                    <Route
+                      component={() => (
+                        <Empty
+                          description="404 Page not Found"
+                          style={{ marginTop: 200, minHeight: "60vh" }}
+                        />
+                      )}
+                    />
+                  </Switch>
+                  {state.menuOpened && (
+                    <DarkOverlay onClick={() => updateMenu()} />
+                  )}
+                  <Footer />
+                </StyledMainLayout>
+              </Layout>
+            </ThemeContext.Provider>
+          )}
+        />
+        <Route
+          component={() => (
+            <Empty
+              description="404 Page not Found"
+              style={{ paddingTop: 200 }}
+            />
+          )}
+        />
       </Switch>
-      <Route
-        path="/dashboard"
-        render={props => (
-          <ThemeContext.Provider
-            value={{
-              menuOpened: state.menuOpened,
-              updateMenuState: updateMenu
-            }}
-          >
-            <Layout>
-              <Sidebar {...props} />
-              <StyledMainLayout menu={state.menuOpened ? 1 : 0}>
-                <Header />
-                <Switch>
-                  <Route
-                    path="/dashboard"
-                    exact
-                    component={AsyncDashboardHome}
-                  />
-                  <Route
-                    path="/dashboard/activeRooms"
-                    component={AsyncActiveRooms}
-                  />
-                  {/*<Route path="/error" component={AsyncNotFound} />*/}
-                  {/*<Route component={AsyncNotFound} />*/}
-                </Switch>
-                {state.menuOpened && (
-                  <DarkOverlay onClick={() => updateMenu()} />
-                )}
-                <Footer />
-              </StyledMainLayout>
-            </Layout>
-          </ThemeContext.Provider>
-        )}
-      />
       <ReactResizeDetector
         handleWidth
         onResize={onResize}
