@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import { Route, Switch, Link } from "react-router-dom";
-import { Layout } from "antd";
+import { Layout, Empty } from "antd";
 import Loadable from "react-loadable";
 import styled from "styled-components";
 import ThemeContext from "./context/themeContext";
