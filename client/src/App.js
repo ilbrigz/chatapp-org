@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 // import io from "socket.io-client";
 import MainRouter from "./MainRouter";
 import { theme } from "./theme";
+
 // const socket = io("http://localhost:8080");
 
 // // Check for token
@@ -21,7 +22,7 @@ import { theme } from "./theme";
 //   });
 // }
 
-class App extends Component {
+const App = () => {
   // componentDidMount = () => {
   //   socket.on("connect", data => {
   //     console.log("connected to the server");
@@ -30,16 +31,13 @@ class App extends Component {
   //     console.log(data);
   //   });
   // };
-
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <MainRouter />
-        </BrowserRouter>
-      </ThemeProvider>
-    );
-  }
-}
+  return (
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <MainRouter />
+      </BrowserRouter>
+    </ThemeProvider>
+  );
+};
 
 export default App;

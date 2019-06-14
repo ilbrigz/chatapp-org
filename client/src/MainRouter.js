@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
 import Loadable from "react-loadable";
+import styled from "styled-components";
 import ThemeContext from "./context/themeContext";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
@@ -9,6 +10,7 @@ import Sidebar from "./components/layout/Sidebar";
 import PageLoader from "./components/common/PageLoader";
 import themeReducer from "./context/themeReducer";
 import { UPDATE_MENU } from "./context/types";
+import ReactResizeDetector from "react-resize-detector";
 
 const AsyncHome = Loadable({
   loader: () => import("./components/main/Home"),
@@ -27,14 +29,40 @@ const AsyncActiveRooms = Loadable({
   loading: PageLoader
 });
 
-export default () => {
-  const [state, dispatch] = useReducer(themeReducer, { menuState: "opened" });
+const StyledMainLayout = styled(Layout)`
+  margin-left: ${props => (props.menu ? "260px" : "80px")};
+  @media screen and (max-width: 576px) {
+    margin-left: 0 !important;
+  }
+`;
 
-  const updateMenu = payload =>
-    dispatch({
-      type: UPDATE_MENU,
-      payload
-    });
+const DarkOverlay = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #282c34;
+  opacity: 0.7;
+  display: none;
+  @media screen and (max-width: 576px) {
+    display: block;
+  }
+`;
+
+export default () => {
+  const [state, dispatch] = useReducer(themeReducer, { menuOpened: true });
+
+  const updateMenu = () => dispatch({ type: UPDATE_MENU });
+
+  const onResize = width => {
+    if (
+      (state.menuOpened && width < 992) ||
+      (!state.menuOpened && width > 992)
+    ) {
+      updateMenu();
+    }
+  };
 
   return (
     <React.Fragment>
@@ -48,22 +76,13 @@ export default () => {
         render={props => (
           <ThemeContext.Provider
             value={{
-              menuState: state.menuState,
+              menuOpened: state.menuOpened,
               updateMenuState: updateMenu
             }}
           >
             <Layout>
               <Sidebar {...props} />
-              <Layout
-                style={{
-                  marginLeft:
-                    state.menuState === "opened"
-                      ? "260px"
-                      : state.menuState === "closed"
-                        ? "80px"
-                        : "0"
-                }}
-              >
+              <StyledMainLayout menu={state.menuOpened ? 1 : 0}>
                 <Header />
                 <Switch>
                   <Route
@@ -78,11 +97,19 @@ export default () => {
                   {/*<Route path="/error" component={AsyncNotFound} />*/}
                   {/*<Route component={AsyncNotFound} />*/}
                 </Switch>
+                {state.menuOpened && (
+                  <DarkOverlay onClick={() => updateMenu()} />
+                )}
                 <Footer />
-              </Layout>
+              </StyledMainLayout>
             </Layout>
           </ThemeContext.Provider>
         )}
+      />
+      <ReactResizeDetector
+        handleWidth
+        onResize={onResize}
+        refreshMode="throttle"
       />
     </React.Fragment>
   );

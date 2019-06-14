@@ -10,57 +10,7 @@ import {
 import { data2, data1, menu1Links, menu2Links } from "./data";
 import CreateRoomForm from "./CreateRoomForm";
 
-// const count = 3;
-// const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
-
 const DashboardHome = () => {
-  // const [data, setData] = useState([]);
-  // const [list, setList] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [initialLoading, setInitialLoading] = useState(false);
-  //
-  // useEffect(() => {
-  //   getData(res => {
-  //     setData(res.data.results);
-  //     setList(res.data.results);
-  //     setInitialLoading(false);
-  //     console.log(res);
-  //   });
-  // }, []);
-  //
-  // const getData = callback => {
-  //   axios.get(fakeDataUrl).then(res => callback(res));
-  // };
-  //
-  // const onLoadMore = () => {
-  //   setLoading(true);
-  //   setList(
-  //     data.concat(
-  //       [...new Array(count)].map(() => ({ loading: true, name: {} }))
-  //     )
-  //   );
-  //   getData(res => {
-  //     const newData = data.concat(res.data.results);
-  //     setData(newData);
-  //     setList(newData);
-  //     setLoading(false);
-  //     // window.dispatchEvent(new Event("resize"));
-  //   });
-  // };
-  //
-  // const loadMore =
-  //   !initialLoading && !loading ? (
-  //     <div
-  //       style={{
-  //         textAlign: "center",
-  //         marginTop: 12,
-  //         height: 32,
-  //         lineHeight: "32px"
-  //       }}
-  //     >
-  //       <Button onClick={onLoadMore}>loading more</Button>
-  //     </div>
-  //   ) : null;
 
   const menu1 = (
     <Menu>
@@ -123,7 +73,12 @@ const DashboardHome = () => {
           header={
             <TableTitle title="Join a Room" menu={menu1} link="Most Popular" />
           }
-          footer={<TableFooter room="/rooms" title="Show All Rooms" />}
+          footer={
+            <TableFooter
+              room="dashboard/activeRooms/chat1"
+              title="Show All Rooms"
+            />
+          }
           renderItem={item => (
             <List.Item>
               <List.Item.Meta
@@ -141,7 +96,12 @@ const DashboardHome = () => {
           itemLayout="horizontal"
           dataSource={data2}
           header={<TableTitle title="Favourites" menu={menu2} link="Sort By" />}
-          footer={<TableFooter room="/rooms" title="Show All Rooms" />}
+          footer={
+            <TableFooter
+              room="dashboard/activeRooms/chat1"
+              title="Show All Rooms"
+            />
+          }
           renderItem={item => (
             <List.Item>
               <List.Item.Meta

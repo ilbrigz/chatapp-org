@@ -25,14 +25,12 @@ const StyledSearch = styled(Input.Search)`
 
 const StyledItemGroup = styled(Menu.SubMenu)`
   position: absolute !important;
-  right: ${props =>
-    props.menu === "opened"
-      ? "230px"
-      : props.menu === "closed"
-        ? "50px"
-        : "-30px"};
+  right: ${props => (props.menu ? "230px" : "50px")};
   height: 64px;
   min-width: 200px;
+  @media screen and (max-width: 576px) {
+    right: -30px !important;
+  }
 `;
 
 const MenuIconCollapse = styled(Menu.Item)`
@@ -40,7 +38,7 @@ const MenuIconCollapse = styled(Menu.Item)`
   padding-left: 0;
 `;
 
-const Header = props => {
+const Header = () => {
   const [dataSource, setDataSource] = useState([]);
   const context = useContext(themeContext);
 
@@ -49,11 +47,7 @@ const Header = props => {
   };
 
   const handleHideMenu = () => {
-    if (context.menuState === "hidden") {
-      context.updateMenuState("closed");
-    } else {
-      context.updateMenuState("hidden");
-    }
+    context.updateMenuState();
   };
 
   const onSelect = value => console.log("onSelect", value);
@@ -71,9 +65,9 @@ const Header = props => {
         <MenuIconCollapse>
           <Icon
             className="trigger"
-            type={context.menuState === "hidden" ? "menu-unfold" : "menu-fold"}
+            type={context.menuOpened ? "menu-fold" : "menu-unfold"}
             onClick={handleHideMenu}
-            style={{ padding: 5 }}
+            style={{ padding: 5, fontSize: 24, marginTop: 17 }}
           />
         </MenuIconCollapse>
         <AutoComplete
@@ -96,7 +90,7 @@ const Header = props => {
               <Avatar size={"large"}>MD</Avatar>
             </span>
           }
-          menu={context.menuState}
+          menu={context.menuOpened ? 1 : 0}
         >
           <Menu.ItemGroup>
             <Menu.Item key="setting:1">

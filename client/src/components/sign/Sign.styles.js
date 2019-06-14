@@ -25,7 +25,7 @@ export const LeftSide = styled.div`
   color: ${props => props.theme.whiteColor};
   &::after {
     content: "";
-    background: url("images/sign_bg3.png") no-repeat bottom center;
+    background: url("images/sign_bg.png") no-repeat bottom center;
     background-size: cover;
     width: 100%;
     height: 70%;

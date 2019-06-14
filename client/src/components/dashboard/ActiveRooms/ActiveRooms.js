@@ -1,19 +1,125 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { List, Avatar, Empty } from "antd";
+import { Link } from "react-router-dom";
 import {
-  LayoutContainer, MainHeader,
-  StyledListContainer
+  LayoutContainer,
+  MainHeader,
+  StyledListContainer,
+  LeftSide,
+  RightSide,
+  ListHeader,
+  StyledTextArea
 } from "./ActiveRooms.styles";
+import { data1, dataChat, colorList } from "../DashboardHome/data";
 
-const DashboardHome = () => {
+const ActiveRoom = props => {
+  const roomChat = props.location.pathname.split("/")[3] || "chat1";
+  const [chat, setChat] = useState(dataChat[roomChat]);
+  const listContainerRef = useRef(null);
+
+  useEffect(
+    () => {
+      setChat(dataChat[roomChat]);
+    },
+    [roomChat]
+  );
+
+  const handleAddChat = e => {
+    e.preventDefault();
+    if (e.target.value.trim()) {
+      setChat([
+        ...chat,
+        {
+          name: "@JohnDoe",
+          avatar: "MD",
+          message: e.target.value
+        }
+      ]);
+      e.target.value = null;
+      if (chat.length > 4) {
+        let lastChildInList =
+          listContainerRef.current.children[1].children[0].children[0]
+            .children[0].children;
+        setTimeout(() => {
+          lastChildInList[lastChildInList.length - 1].scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+          });
+        }, 100);
+      }
+    }
+  };
 
   return (
     <LayoutContainer>
       <MainHeader level={2}>Active Rooms</MainHeader>
       <StyledListContainer>
-
+        <LeftSide>
+          <ListHeader level={3}>Web Developers</ListHeader>
+          <List
+            itemLayout="horizontal"
+            dataSource={data1}
+            renderItem={item => (
+              <List.Item className={roomChat === item.id && "active"}>
+                <List.Item.Meta
+                  title={
+                    <Link to={`/dashboard/activeRooms/${item.id}`}>
+                      <span>{item.title}</span>
+                      <div>1,214 online</div>
+                    </Link>
+                  }
+                />
+              </List.Item>
+            )}
+          />
+        </LeftSide>
+        <RightSide ref={listContainerRef}>
+          <ListHeader level={3}>Web Developers</ListHeader>
+          {chat.length ? (
+            <List
+              itemLayout="horizontal"
+              dataSource={chat}
+              locale={{
+                emptyText: "No messages yet!"
+              }}
+              renderItem={(item, i) => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        size={60}
+                        style={{
+                          backgroundColor: colorList[i % 10]
+                        }}
+                      >
+                        {item.avatar}
+                      </Avatar>
+                    }
+                    title={
+                      <a
+                        href="https://ant.design"
+                        style={{ fontWeight: "bold" }}
+                      >
+                        {item.name}
+                      </a>
+                    }
+                    description={item.message}
+                  />
+                </List.Item>
+              )}
+            />
+          ) : (
+            <Empty description="No messages yet" />
+          )}
+          <StyledTextArea
+            onPressEnter={handleAddChat}
+            row={10}
+            placeholder="Type your message here..."
+          />
+        </RightSide>
       </StyledListContainer>
     </LayoutContainer>
   );
 };
 
-export default DashboardHome;
+export default ActiveRoom;

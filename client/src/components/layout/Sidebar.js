@@ -3,52 +3,48 @@ import { Layout, Menu, Icon } from "antd";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import themeContext from "../../context/themeContext";
+import {
+  ChatIcon,
+  HelpIcon,
+  HomeIcon,
+  LogOutIcon,
+  RandomRoomIcon,
+  SettingsIcon
+} from "../common/icons";
 
 const StyledSideBar = styled(Layout.Sider)`
   &:not(.ant-layout-sider-collapsed) {
-    min-width: ${props =>
-      props.menu === "opened"
-        ? "260px !important"
-        : props.menu === "closed"
-          ? "80px !important"
-          : "0px !important"};
-    width: ${props =>
-      props.menu === "opened"
-        ? "260px !important"
-        : props.menu === "closed"
-          ? "80px !important"
-          : "0px !important"};
+    min-width: 260px !important;
     .ant-layout-sider-trigger {
-      min-width: ${props =>
-        props.menu === "opened"
-          ? "260px !important"
-          : props.menu === "closed"
-            ? "80px !important"
-            : "0px !important"};
-      width: ${props =>
-        props.menu === "opened"
-          ? "260px !important"
-          : props.menu === "closed"
-            ? "80px !important"
-            : "0px !important"};
+      min-width: 260px;
+    }
+  }
+  @media screen and (max-width: 576px) {
+    &.ant-layout-sider-collapsed {
+      width: 0 !important;
+      min-width: 0 !important;
     }
   }
   .ant-layout-sider-children {
     overflow: scroll;
   }
+  .ant-menu-item .anticon svg {
+    width: ${props => (props.menu ? "15px" : "20px")};
+    height: ${props => (props.menu ? "15px" : "20px")};
+  }
 `;
 
 const StyledLogo = styled.div`
-  padding: 1rem;
+  padding: 0 1rem;
   letter-spacing: 4px;
   color: ${props => props.theme.whiteColor};
   font-size: 1.8rem;
   background: rgba(0, 0, 0, 0.1) !important;
   margin-bottom: 30px;
-`;
-
-const StyledLogoIcon = styled(StyledLogo)`
-  text-align: center;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: ${props => (props.menu ? "flex-start" : "center")};
 `;
 
 const StyledItem = styled(Menu.Item)`
@@ -84,27 +80,20 @@ const StyledSubMenu = styled(Menu.SubMenu)`
     background: rgba(0, 0, 0, 0.1) !important;
   }
   .ant-menu-sub {
-    margin-left: ${props => (props.menu === "closed" ? "82px" : "0")};
+    margin-left: ${props => (props.menu ? "0" : "82px")};
   }
 `;
 
 const Sidebar = props => {
   const context = useContext(themeContext);
-  console.log(context);
-  const handleCloseMenu = () => {
-    if (context.menuState === "opened") {
-      context.updateMenuState("closed");
-    } else {
-      context.updateMenuState("opened");
-    }
-  };
 
   return (
     <StyledSideBar
       collapsible
-      collapsed={context.menuState === "closed"}
-      onCollapse={handleCloseMenu}
-      breakpoint="md"
+      collapsed={!context.menuOpened}
+      onCollapse={context.updateMenuState}
+      breakpoint="sm"
+      trigger={null}
       style={{
         overflow: "auto",
         height: "100vh",
@@ -112,14 +101,16 @@ const Sidebar = props => {
         left: 0,
         zIndex: 10000
       }}
-      menu={context.menuState}
+      menu={context.menuOpened ? 1 : 0}
     >
-      {context.menuState === "closed" ? (
-        <StyledLogoIcon className="logo">
-          <Icon type="pie-chart" />
-        </StyledLogoIcon>
+      {context.menuOpened ? (
+        <StyledLogo menu={context.menuOpened ? 1 : 0} className="logo">
+          KLATCH
+        </StyledLogo>
       ) : (
-        <StyledLogo className="logo">KLATCH</StyledLogo>
+        <StyledLogo className="logo">
+          <Icon type="pie-chart" />
+        </StyledLogo>
       )}
 
       <Menu
@@ -131,42 +122,42 @@ const Sidebar = props => {
       >
         <StyledItem key="home">
           <Link to="/dashboard">
-            <Icon type="home" theme="filled" />
+            <HomeIcon />
             <span>Dashboard</span>
           </Link>
         </StyledItem>
         <StyledItem key="activeRooms">
-          <Link to="/dashboard/activeRooms">
-            <Icon type="message" theme="filled" />
+          <Link to="/dashboard/activeRooms/chat1">
+            <ChatIcon />
             <span>Active Rooms</span>
           </Link>
         </StyledItem>
         <StyledItem key="3">
           <Link to="/dashboard">
-            <Icon type="smile" theme="filled" />
+            <RandomRoomIcon />
             <span>Join Random Room</span>
           </Link>
         </StyledItem>
         <StyledItem key="4">
           <Link to="/dashboard">
-            <Icon type="setting" theme="filled" />
+            <SettingsIcon />
             <span>Settings</span>
           </Link>
         </StyledItem>
         <StyledItem key="5">
           <Link to="/dashboard">
-            <Icon type="global" />
+            <HelpIcon />
             <span>Help</span>
           </Link>
         </StyledItem>
         <StyledItem key="6">
           <Link to="/dashboard">
-            <Icon type="user" />
+            <LogOutIcon />
             <span>Log Out</span>
           </Link>
         </StyledItem>
         <StyledSubMenu
-          menu={context.menuState}
+          menu={context.menuOpened ? 1 : 0}
           key="sub1"
           title={
             <span>
