@@ -16,27 +16,33 @@ const CreateRoomForm = props => {
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFields(async (err, values) => {
-      setLoading(true);
-      try {
-        await axios.post(`${backendURL}/createRoom`, values);
-        setLoading(false);
-        props.form.resetFields();
-        Modal.success({
-          title: "Your room was created",
-          content: "You can always add more friends to your room",
-          okText: "Visit Room",
-          maskClosable: true,
-          onOk: () => {
-            console.log("XXXX");
-          }
-        });
-      } catch (e) {
-        setLoading(false);
-        let errors = e.response.data;
-        console.log(errors);
-      }
-
       if (!err) {
+        setLoading(true);
+        try {
+          await axios.post(`${backendURL}/createRoom`, values);
+          setLoading(false);
+          props.form.resetFields();
+          Modal.success({
+            title: "Your room was created",
+            content: "You can always add more friends to your room",
+            okText: "Visit Room",
+            maskClosable: true,
+            onOk: () => {
+              console.log("XXXX");
+            }
+          });
+        } catch (e) {
+          setLoading(false);
+          let errors = e.response.data;
+          Object.keys(errors).map(function(key) {
+            return props.form.setFields({
+              [key]: {
+                value: values[key],
+                errors: errors[key].map(err => new Error(err))
+              }
+            });
+          });
+        }
       }
     });
   };
