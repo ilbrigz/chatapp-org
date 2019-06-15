@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Layout, Typography} from "antd";
+import { Layout, Typography } from "antd";
 
 export const LayoutContainer = styled(Layout.Content)`
   padding: 2rem 1rem;
@@ -7,11 +7,12 @@ export const LayoutContainer = styled(Layout.Content)`
   min-height: 100vh;
   @media screen and (max-width: 600px) {
     padding: 0;
-    .ant-list, .ant-form {
+    .ant-list,
+    .ant-form {
       margin-left: 3px !important;
       margin-right: 3px !important;
     }
-  };
+  }
 `;
 
 export const MainHeader = styled(Typography.Title)`
@@ -66,7 +67,6 @@ export const StyledListContainer = styled.div`
 export const StyledLink = styled.a`
   color: ${props => props.theme.secondaryColor};
 `;
-
 
 export const StyledContainer = styled.div`
   display: flex;
