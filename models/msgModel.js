@@ -7,6 +7,9 @@ const msgSchema = new mongoose.Schema({
     required: "Title is required",
     trim: true
   },
+  avatar: {
+    type: String
+  },
   sender: {
     type: ObjectId,
     ref: "User"

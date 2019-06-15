@@ -2,11 +2,11 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-// import io from "socket.io-client";
+import io from "socket.io-client";
 import MainRouter from "./MainRouter";
 import { theme } from "./theme";
 
-// const socket = io("http://localhost:8080");
+const socket = io("http://localhost:8080");
 
 // // Check for token
 // if (localStorage.verificationId && typeof window !== "undefined") {

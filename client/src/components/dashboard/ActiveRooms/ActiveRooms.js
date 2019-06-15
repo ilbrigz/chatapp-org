@@ -12,25 +12,31 @@ import {
   StyledInputSearch
 } from "./ActiveRooms.styles";
 import { data1, dataChat, colorList } from "../DashboardHome/data";
+import axios from "axios";
+import { backendURL } from "../../../variables";
 
 const ActiveRoom = props => {
   const roomChat = props.location.pathname.split("/")[3] || "chat1";
 
   const [chat, setChat] = useState(dataChat[roomChat]);
-  const [rooms, setRooms] = useState(data1);
+  const [rooms, setRooms] = useState([]);
   const [title, setTitle] = useState("");
   const listContainerRef = useRef(null);
 
-  useEffect(
-    () => {
-      setChat(dataChat[roomChat]);
-      let roomObj = data1.find(room => room.id === roomChat);
-      if (roomObj) {
-        setTitle(roomObj.title);
-      }
-    },
-    [roomChat]
-  );
+  useEffect(() => {
+    setChat(dataChat[roomChat]);
+    let roomObj = data1.find(room => room.id === roomChat);
+    if (roomObj) {
+      setTitle(roomObj.title);
+    }
+  }, [roomChat]);
+  useEffect(() => {
+    async function fetchActiveRooms() {
+      const result = await axios.get(`${backendURL}/room/popular/5`);
+      setRooms(result.data.rooms);
+    }
+    fetchActiveRooms();
+  }, []);
 
   const handleSearchRooms = e => {
     if (e.target.value) {
@@ -90,12 +96,12 @@ const ActiveRoom = props => {
             itemLayout="horizontal"
             dataSource={rooms}
             renderItem={item => (
-              <List.Item className={roomChat === item.id && "active"}>
+              <List.Item className={roomChat === item._id && "active"}>
                 <List.Item.Meta
                   title={
-                    <Link to={`/dashboard/activeRooms/${item.id}`}>
-                      <span>{item.title}</span>
-                      <div>1,214 online</div>
+                    <Link to={`/dashboard/activeRooms/${item._id}`}>
+                      <span>{item.roomName}</span>
+                      <div>{item.userCount} online</div>
                     </Link>
                   }
                 />

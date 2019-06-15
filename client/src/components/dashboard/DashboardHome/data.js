@@ -92,7 +92,7 @@ export const colorList = [
 ];
 
 export const dataChat = {
-  chat1: [
+  "5d03a424ffd97a1d24fc08dd": [
     {
       name: "@davidj",
       avatar: "MD",

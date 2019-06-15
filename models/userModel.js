@@ -1,13 +1,17 @@
 const mongoose = require("mongoose");
 const uuidv1 = require("uuid/v1");
 const crypto = require("crypto");
-// const { ObjectId } = mongoose.Schema;
+const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     trim: true,
     required: true
+  },
+  about: {
+    type: String,
+    trim: true
   },
   lastName: {
     type: String,
@@ -32,7 +36,31 @@ const userSchema = new mongoose.Schema({
   created: {
     type: Date,
     default: Date.now
-  }
+  },
+  subscribedRoom: [
+    {
+      type: ObjectId,
+      ref: "Room"
+    }
+  ],
+  joinedRooms: [
+    {
+      type: ObjectId,
+      ref: "Room"
+    }
+  ],
+  favoriteRooms: [
+    {
+      type: ObjectId,
+      ref: "Room"
+    }
+  ],
+  friends: [
+    {
+      type: ObjectId,
+      ref: "User"
+    }
+  ]
 });
 
 // add virtual fields to schema
