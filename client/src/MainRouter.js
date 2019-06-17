@@ -111,7 +111,7 @@ export default () => {
                       component={AsyncDashboardHome}
                     />
                     <Route
-                      path="/dashboard/activeRooms"
+                      path="/dashboard/activeRooms/:id"
                       component={AsyncActiveRooms}
                     />
                     <Route

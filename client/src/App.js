@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useReducer } from "react";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import io from "socket.io-client";
 import MainRouter from "./MainRouter";
 import { theme } from "./theme";
+import { AuthContextProvider } from "./context/authContext";
 
 const socket = io("http://localhost:8080");
 
@@ -33,9 +34,11 @@ const App = () => {
   // };
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <MainRouter />
-      </BrowserRouter>
+      <AuthContextProvider>
+        <BrowserRouter>
+          <MainRouter />
+        </BrowserRouter>
+      </AuthContextProvider>
     </ThemeProvider>
   );
 };

@@ -38,7 +38,7 @@ const signin = async (req, res) => {
       err: ["userName and password do not match"]
     });
   }
-  const { _id, firstName } = user;
+  const { _id, userName, firstName } = user;
 
   // generate token
   const token = jwt.sign(
@@ -58,6 +58,7 @@ const signin = async (req, res) => {
 
   return res.status(200).json({
     userId: _id,
+    userName,
     verificationId,
     firstName
   });

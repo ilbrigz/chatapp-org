@@ -5,7 +5,8 @@
   "author": "brayn",
   "scripts": {
     "client": "npm start --prefix client",
-    "server": "nodemon server.js",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "server": "cross-env NODE_ENV=development nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\" --names 💌,☯️ --prefix name"
   },
   "dependencies": {
@@ -22,11 +23,15 @@
     "helmet": "^3.16.0",
     "jimp": "^0.6.4",
     "jsonwebtoken": "^8.5.1",
+    "mongo-seeding": "^3.2.0",
     "mongoose": "^5.5.0",
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
     "socket.io": "^2.2.0",
     "uuid": "^3.3.2"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^5.2.0"
+  }
 }

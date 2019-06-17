@@ -30,6 +30,7 @@ const createRoom = async (req, res) => {
   const invitedUser1 = await User.findOne({
     $or: [{ userName: req.body.invitedUser1 }, { email: req.body.invitedUser1 }]
   }).select("_id");
+
   if (!invitedUser1)
     return res
       .status(403)

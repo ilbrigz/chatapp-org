@@ -9,7 +9,10 @@ const cookieParser = require("cookie-parser");
 const expressValidator = require("express-validator");
 const cors = require("cors");
 const path = require("path");
+
 const http = require("http");
+const { Seeder } = require("mongo-seeding");
+
 dotenv.config();
 
 // socket io TODO
@@ -22,12 +25,9 @@ const roomRoutes = require("./routes/roomRoutes");
 const port = process.env.PORT || 8080;
 
 mongoose
-  .connect(
-    process.env.MONGO_URI,
-    {
-      useNewUrlParser: true
-    }
-  )
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true
+  })
   .then(() => console.log("db connected"));
 
 mongoose.connection.on("error", err =>
@@ -37,6 +37,17 @@ mongoose.connection.on("error", err =>
 const server = app.listen(port, function() {
   console.log("Express server listening on port " + port);
 });
+
+console.log(process.env.NODE_ENV);
+// seed databse
+const seeder = new Seeder({
+  database: process.env.MONGO_URI,
+  dropDatabase: true
+});
+
+const collections = seeder.readCollectionsFromPath(path.resolve("./data"));
+
+seeder.import(collections);
 
 chatContoller.socketio(server);
 

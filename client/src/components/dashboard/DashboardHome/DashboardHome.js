@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { List, Typography, Icon, Menu, Dropdown } from "antd";
 import { Link } from "react-router-dom";
 import {
@@ -9,8 +9,21 @@ import {
 } from "./DashboardHome.styles";
 import { data2, data1, menu1Links, menu2Links } from "./data";
 import CreateRoomForm from "./CreateRoomForm";
+import axios from "axios";
+import { backendURL } from "../../../variables";
 
 const DashboardHome = () => {
+  const [rooms, setRooms] = useState(data1);
+
+  useEffect(() => {
+    async function fetchActiveRooms() {
+      const result = await axios.get(`${backendURL}/room/popular/5`);
+
+      setRooms(result.data.rooms);
+    }
+    fetchActiveRooms();
+  }, []);
+
   const menu1 = (
     <Menu>
       {menu1Links.map((link, i) => (
@@ -68,7 +81,7 @@ const DashboardHome = () => {
       <StyledListContainer>
         <List
           itemLayout="horizontal"
-          dataSource={data1}
+          dataSource={rooms}
           header={
             <TableTitle title="Join a Room" menu={menu1} link="Most Popular" />
           }
@@ -82,12 +95,12 @@ const DashboardHome = () => {
             <List.Item>
               <List.Item.Meta
                 title={
-                  <Link to="https://ant.design">
-                    <span>{item.title}</span>
+                  <Link to={`/dashboard/activeRooms/${item._id}`}>
+                    <span>{item.roomName}</span>
                   </Link>
                 }
               />
-              <div>1,214 online</div>
+              <div>{item.userCount} online</div>
             </List.Item>
           )}
         />

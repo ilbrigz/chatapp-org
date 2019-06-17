@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Form, Checkbox, Modal } from "antd";
 import axios from "axios";
@@ -11,19 +11,26 @@ import {
   LinksContainer
 } from "./Sign.styles";
 import { backendURL } from "../../variables";
+import { AuthContext } from "../../context/authContext";
 
 const SignIn = props => {
   const [loading, setLoading] = useState(false);
-
+  const { setAuthUser } = useContext(AuthContext);
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFields(async (err, values) => {
       if (!err) {
         setLoading(true);
         try {
-          await axios.post(`${backendURL}/signin`, values);
+          const response = await axios.post(`${backendURL}/signin`, values);
           setLoading(false);
           props.form.resetFields();
+          const { userId, userName } = response.data;
+          setAuthUser({
+            userName,
+            userId,
+            auth: true
+          });
           Modal.success({
             title: "You are logged in successfully",
             content: "You will be redirected to your dashboard",
