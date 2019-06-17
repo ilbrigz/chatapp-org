@@ -20,6 +20,7 @@ const chatContoller = require("./controllers/chatConroller");
 // api routes
 const authRoutes = require("./routes/authRoutes");
 const roomRoutes = require("./routes/roomRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const port = process.env.PORT || 8080;
 
@@ -37,10 +38,6 @@ const server = app.listen(port, function() {
   console.log("Express server listening on port " + port);
 });
 
-
-
-
-
 chatContoller.socketio(server);
 
 app.use(helmet());
@@ -55,6 +52,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", authRoutes);
 app.use("/", roomRoutes);
+app.use("/", userRoutes);
 
 app.get("/", (req, res, next) => res.send("my backend api"));
 

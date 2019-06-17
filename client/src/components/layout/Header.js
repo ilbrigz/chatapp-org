@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Layout, Menu, Input, AutoComplete, Icon, Avatar } from "antd";
 import styled from "styled-components";
 import themeContext from "../../context/themeContext";
+import { AuthContext } from "../../context/authContext";
 
 const StyledHeader = styled(Menu)`
   display: flex;
@@ -51,7 +52,7 @@ const Header = () => {
   };
 
   const onSelect = value => console.log("onSelect", value);
-
+  const { authUser } = useContext(AuthContext);
   return (
     <Layout.Header
       style={{ position: "fixed", zIndex: 1, width: "100%", padding: 0 }}
@@ -85,7 +86,7 @@ const Header = () => {
         <StyledItemGroup
           title={
             <span className="submenu-title-wrapper">
-              John Doe
+              {authUser.userName}
               <Icon type="caret-down" style={{ paddingLeft: 10 }} />
               <Avatar size={"large"}>MD</Avatar>
             </span>
