@@ -7,7 +7,8 @@
     "client": "npm start --prefix client",
     "start": "cross-env NODE_ENV=production node server.js",
     "server": "cross-env NODE_ENV=development nodemon server.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\" --names 💌,☯️ --prefix name"
+    "dev": "concurrently \"npm run server\" \"npm run client\" --names 💌,☯️ --prefix name",
+    "seed": "node seeder/seed.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

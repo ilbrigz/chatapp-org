@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
@@ -7,7 +7,7 @@ import MainRouter from "./MainRouter";
 import { theme } from "./theme";
 import { AuthContextProvider } from "./context/authContext";
 
-const socket = io("http://localhost:8080");
+// const socket = io("http://localhost:8080");
 
 // // Check for token
 // if (localStorage.verificationId && typeof window !== "undefined") {

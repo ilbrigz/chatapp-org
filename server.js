@@ -11,7 +11,6 @@ const cors = require("cors");
 const path = require("path");
 
 const http = require("http");
-const { Seeder } = require("mongo-seeding");
 
 dotenv.config();
 
@@ -38,16 +37,9 @@ const server = app.listen(port, function() {
   console.log("Express server listening on port " + port);
 });
 
-console.log(process.env.NODE_ENV);
-// seed databse
-const seeder = new Seeder({
-  database: process.env.MONGO_URI,
-  dropDatabase: true
-});
 
-const collections = seeder.readCollectionsFromPath(path.resolve("./data"));
 
-seeder.import(collections);
+
 
 chatContoller.socketio(server);
 
