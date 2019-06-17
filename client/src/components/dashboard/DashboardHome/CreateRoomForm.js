@@ -20,6 +20,7 @@ const CreateRoomForm = props => {
       if (!err) {
         setLoading(true);
         try {
+          values.createdBy = authUser.userId
           await axios.post(`${backendURL}/createRoom`, values);
           setLoading(false);
           props.form.resetFields();
