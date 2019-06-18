@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Checkbox, Modal } from "antd";
 import axios from "axios";
@@ -15,17 +15,34 @@ import { AuthContext } from "../../context/authContext";
 
 const SignIn = props => {
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useContext(AuthContext);
+  const {
+    setAuthUser,
+    authUser: { userId: authId }
+  } = useContext(AuthContext);
+  console.log(localStorage.verificationId, authId);
+  useEffect(() => {
+    if (localStorage.verificationId && authId) {
+      console.log(localStorage.verificationId && authId);
+      props.history.push("/dashboard");
+    }
+  }, []);
+
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFields(async (err, values) => {
       if (!err) {
         setLoading(true);
         try {
-          const response = await axios.post(`${backendURL}/signin`, values);
+          const response = await axios.post(`/signin`, values);
           setLoading(false);
           props.form.resetFields();
-          const { userId, userName } = response.data;
+          const { userId, userName, verificationId } = response.data;
+          localStorage.setItem("verificationId", verificationId);
+          localStorage.setItem("userId", userId);
+          localStorage.setItem("userName", userName);
+          axios.defaults.headers.common[
+            "payload-verification-id"
+          ] = verificationId;
           setAuthUser({
             userName,
             userId,
@@ -39,6 +56,11 @@ const SignIn = props => {
           });
         } catch (e) {
           setLoading(false);
+          console.log(e);
+          delete axios.defaults.headers.common["payload-verification-id"];
+          localStorage.removeItem("verificationId");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("userName");
           props.form.setFields({
             userName: {
               value: values.userName,

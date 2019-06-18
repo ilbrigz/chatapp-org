@@ -1,7 +1,8 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext, useEffect } from "react";
 import { Route, Switch, Link } from "react-router-dom";
 import { Layout, Empty } from "antd";
 import Loadable from "react-loadable";
+import axios from "axios";
 import styled from "styled-components";
 import ThemeContext from "./context/themeContext";
 import Header from "./components/layout/Header";
@@ -11,6 +12,7 @@ import PageLoader from "./components/common/PageLoader";
 import themeReducer from "./context/themeReducer";
 import { UPDATE_MENU } from "./context/types";
 import ReactResizeDetector from "react-resize-detector";
+import { AuthContext } from "./context/authContext";
 
 const AsyncHome = Loadable({
   loader: () => import("./components/main/Home"),
@@ -63,6 +65,27 @@ export default () => {
       updateMenu();
     }
   };
+  const { setAuthUser } = useContext(AuthContext);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const { verificationId, userId, userName } = localStorage;
+      if (verificationId) {
+        // Set auth token header auth
+        // Apply to every request
+        axios.defaults.headers.common["payload-verification-id"] =
+          localStorage.verificationId;
+        setAuthUser({
+          userName,
+          userId,
+          auth: true
+        });
+      } else {
+        delete axios.defaults.headers.common["payload-verification-id"];
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userName");
+      }
+    }
+  }, []);
 
   return (
     <React.Fragment>

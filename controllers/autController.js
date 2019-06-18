@@ -49,12 +49,28 @@ const signin = async (req, res) => {
     },
     process.env.JWT_SECRET
   );
+
+  // Request methods you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  // Request headers you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader("Access-Control-Allow-Credentials", true);
+
   // cookie expires in 7 days
   res.cookie("t", token, {
     expire: new Date() + 3600000 * 24 * 7,
     httpOnly: true
   });
-  res.setHeader("client-verification-id", verificationId);
 
   return res.status(200).json({
     userId: _id,

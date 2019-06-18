@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Radio, Modal } from "antd";
 import axios from "axios";
 import {
@@ -9,18 +9,17 @@ import {
   FadedSpan
 } from "./DashboardHome.styles";
 import { backendURL } from "../../../variables";
-import { AuthContext } from "../../../context/authContext";
 
 const CreateRoomForm = props => {
   const [loading, setLoading] = useState(false);
-  const { authUser } = useContext(AuthContext);
+
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFields(async (err, values) => {
       if (!err) {
         setLoading(true);
         try {
-          values.createdBy = authUser.userId;
+          values.createdBy = props.userId;
           await axios.post(`${backendURL}/createRoom`, values);
           setLoading(false);
           props.form.resetFields();
@@ -50,7 +49,6 @@ const CreateRoomForm = props => {
   };
 
   const { getFieldDecorator } = props.form;
-  console.log(authUser);
   return (
     <Form
       onSubmit={handleSubmit}
