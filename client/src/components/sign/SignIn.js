@@ -39,9 +39,8 @@ const SignIn = props => {
           });
           Modal.success({
             title: "You are logged in successfully",
-            content: "You will be redirected to your dashboard",
-            okText: "Visit Dashboard",
-            onOk: () => props.history.push("/dashboard")
+            content: "Thank you for Signing In",
+            okText: "Dismiss"
           });
         } catch (e) {
           setLoading(false);

@@ -31,13 +31,6 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <MainRouter />
-        <button
-          onClick={() =>
-            setAuthUser({ auth: true, userId: 1, userName: "gwapo" })
-          }
-        >
-          Gwapo
-        </button>
       </BrowserRouter>
     </ThemeProvider>
   );
