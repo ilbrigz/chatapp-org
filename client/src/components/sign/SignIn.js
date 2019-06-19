@@ -10,22 +10,11 @@ import {
   StyledHeader,
   LinksContainer
 } from "./Sign.styles";
-import { backendURL } from "../../variables";
-import { AuthContext } from "../../context/authContext";
+import useAuthContext from "../../context/useAuthContext";
 
 const SignIn = props => {
   const [loading, setLoading] = useState(false);
-  const {
-    setAuthUser,
-    authUser: { userId: authId }
-  } = useContext(AuthContext);
-  console.log(localStorage.verificationId, authId);
-  useEffect(() => {
-    if (localStorage.verificationId && authId) {
-      console.log(localStorage.verificationId && authId);
-      props.history.push("/dashboard");
-    }
-  }, []);
+  const { authUser, setAuthUser } = useAuthContext();
 
   const handleSubmit = e => {
     e.preventDefault();

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Layout, Menu, Input, AutoComplete, Icon, Avatar } from "antd";
 import styled from "styled-components";
 import themeContext from "../../context/themeContext";
-import { AuthContext } from "../../context/authContext";
+import useAuthContext from "../../context/useAuthContext";
 
 const StyledHeader = styled(Menu)`
   display: flex;
@@ -42,6 +42,7 @@ const MenuIconCollapse = styled(Menu.Item)`
 const Header = () => {
   const [dataSource, setDataSource] = useState([]);
   const context = useContext(themeContext);
+  const { authUser } = useAuthContext();
 
   const handleSearch = value => {
     setDataSource(!value ? [] : [value, value + value, value + value + value]);
@@ -52,7 +53,6 @@ const Header = () => {
   };
 
   const onSelect = value => console.log("onSelect", value);
-  const { authUser } = useContext(AuthContext);
   return (
     <Layout.Header
       style={{ position: "fixed", zIndex: 1, width: "100%", padding: 0 }}

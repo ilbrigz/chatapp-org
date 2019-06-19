@@ -3,6 +3,8 @@ import { Layout, Menu, Icon } from "antd";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import themeContext from "../../context/themeContext";
+import useAuthContext from "../../context/useAuthContext";
+
 import {
   ChatIcon,
   HelpIcon,
@@ -86,7 +88,7 @@ const StyledSubMenu = styled(Menu.SubMenu)`
 
 const Sidebar = props => {
   const context = useContext(themeContext);
-
+  const { unSetAuthUser } = useAuthContext();
   return (
     <StyledSideBar
       collapsible
@@ -150,7 +152,7 @@ const Sidebar = props => {
             <span>Help</span>
           </Link>
         </StyledItem>
-        <StyledItem key="6">
+        <StyledItem key="6" onClick={() => unSetAuthUser(props.history)}>
           <Link to="/dashboard">
             <LogOutIcon />
             <span>Log Out</span>

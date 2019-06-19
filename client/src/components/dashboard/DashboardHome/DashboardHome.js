@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { List, Typography, Icon, Menu, Dropdown } from "antd";
 import { Link } from "react-router-dom";
 import {
@@ -7,21 +7,19 @@ import {
   LayoutContainer,
   MainHeader
 } from "./DashboardHome.styles";
-import { data2, data1, menu1Links, menu2Links } from "./data";
+import { data2, menu1Links, menu2Links } from "./data";
 import CreateRoomForm from "./CreateRoomForm";
 import axios from "axios";
-import { backendURL } from "../../../variables";
-import { AuthContext } from "../../../context/authContext";
+import useAuthContext from "../../../context/useAuthContext";
 
 const DashboardHome = () => {
   const [rooms, setRooms] = useState([]);
   const [favoriteRooms, setfavoriteRooms] = useState([]);
-  const {
-    authUser: { userId }
-  } = useContext(AuthContext);
+  const { authUser } = useAuthContext();
+
   useEffect(() => {
     async function fetchActiveRooms() {
-      const result = await axios.get(`${backendURL}/room/popular/5`);
+      const result = await axios.get(`/room/popular/5`);
 
       setRooms(result.data.rooms);
     }
@@ -29,7 +27,7 @@ const DashboardHome = () => {
   }, []);
   useEffect(() => {
     async function fetchFavoriteRooms() {
-      const result = await axios.get(`${backendURL}/user/${userId}`);
+      const result = await axios.get(`/user/${authUser.userId}`);
 
       setfavoriteRooms(result.data.rooms);
     }
@@ -140,7 +138,7 @@ const DashboardHome = () => {
           )}
         />
       </StyledListContainer>
-      <CreateRoomForm userId={userId} />
+      <CreateRoomForm userId={authUser.userId} />
     </LayoutContainer>
   );
 };
