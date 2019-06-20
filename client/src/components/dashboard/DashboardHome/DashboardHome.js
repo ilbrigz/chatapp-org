@@ -19,21 +19,13 @@ const DashboardHome = () => {
 
   useEffect(() => {
     async function fetchActiveRooms() {
-      const result = await axios.get(`/room/popular/5`);
-
-      setRooms(result.data.rooms);
+      const activeRooms = await axios.get(`/room/popular/5`);
+      const result = await axios.get(`/user/${authUser.userId}`);
+      setRooms(activeRooms.data.rooms);
+      setfavoriteRooms(result.data.favoriteRooms);
     }
     fetchActiveRooms();
   }, []);
-  useEffect(() => {
-    async function fetchFavoriteRooms() {
-      const result = await axios.get(`/user/${authUser.userId}`);
-
-      setfavoriteRooms(result.data.rooms);
-    }
-    fetchFavoriteRooms();
-  }, []);
-
   const menu1 = (
     <Menu>
       {menu1Links.map((link, i) => (
@@ -116,7 +108,7 @@ const DashboardHome = () => {
         />
         <List
           itemLayout="horizontal"
-          dataSource={data2}
+          dataSource={favoriteRooms}
           header={<TableTitle title="Favourites" menu={menu2} link="Sort By" />}
           footer={
             <TableFooter
@@ -124,16 +116,16 @@ const DashboardHome = () => {
               title="Show All Rooms"
             />
           }
-          renderItem={item => (
+          renderItem={room => (
             <List.Item>
               <List.Item.Meta
                 title={
-                  <Link to="https://ant.design">
-                    <span>{item.title}</span>
+                  <Link to={`/room/${room._id}`}>
+                    <span>{room.roomName}</span>
                   </Link>
                 }
               />
-              <div>1,214 online</div>
+              <div>{room.onlineCount} online</div>
             </List.Item>
           )}
         />

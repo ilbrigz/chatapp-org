@@ -6,8 +6,9 @@ require("dotenv").config();
 const userById = (req, res, next, id) => {
   User.findById(id)
     .populate("joinedRooms", "_id roomName")
-    .populate("favoriteRooms", "_id roomName")
+    .populate("favoriteRooms", "_id roomName onlineCount")
     .populate("friends", "_id firstName")
+    .select("firstName _id")
     .exec((err, user) => {
       if (err || !user) {
         return res.status(400).json({

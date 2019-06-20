@@ -26,7 +26,7 @@ const App = () => {
       }
     }
   }, []);
-  console.log(authUser);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>

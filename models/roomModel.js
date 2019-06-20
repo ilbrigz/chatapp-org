@@ -14,6 +14,9 @@ const roomSchema = new mongoose.Schema({
   usersTyping: [{ type: ObjectId, ref: "User" }],
   usersInvited: [{ type: ObjectId, ref: "User" }],
   isPublic: { type: Boolean, default: true },
+  onlineCount: {
+    type: Number
+  },
   createdBy: {
     type: ObjectId,
     ref: "User"
